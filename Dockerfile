@@ -3,4 +3,4 @@ FROM python:3.9-slim
 
 COPY *.py /
 
-ENTRYPOINT ["/main.py"]
+ENTRYPOINT ["python", "/main.py"]

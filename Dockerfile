@@ -1,6 +1,9 @@
 # Container image that runs your code
 FROM python:3.9-slim
 
+RUN python -m pip install --upgrade pip && \
+    pip install -r requirements.txt
+
 COPY *.py /
 
 ENTRYPOINT ["python", "/main.py"]

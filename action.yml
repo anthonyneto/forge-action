@@ -1,6 +1,18 @@
 # action.yml
 name: 'Forge Action'
 description: 'Create environments via the Forge API'
+inputs:
+  BRANCH_NAME:
+    description: 'git branch name'
+    required: true
 runs:
   using: 'docker'
   image: 'Dockerfile'
+
+
+# BRANCH_NAME       = os.getenv('GITHUB_BRANCH_NAME', 'dev')
+# SAFE_BRANCH_NAME  = os.getenv('FORGE_SITE', get_github_branch_name())
+# RDS_ROOT_USERNAME = os.getenv('MYSQL_ROOT_USERNAME', 'admin')
+# RDS_ROOT_PASSWORD = os.getenv('MYSQL_ROOT_PASSWORD', 'admin')
+# RDS_NAME          = os.getenv('CUSTOM_RDS_NAME', 'staging') # this needs to be fixed so the default is from a function not a static string.
+# RDS_PR_DB_NAME    = os.getenv('CUSTOM_RDS_PR_NAME', get_rds_pr_db_name())

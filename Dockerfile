@@ -4,4 +4,4 @@ FROM python:3.9-slim
 COPY main.py .
 COPY modules/* .
 
-ENTRYPOINT ["main.py"]
+ENTRYPOINT ["/main.py"]

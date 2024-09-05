@@ -3,12 +3,12 @@ from manage_rds import *
 from manage_mysql import *
 from manage_site import *
 
-BRANCH_NAME       = os.getenv('GITHUB_BRANCH_NAME', 'dev')
-SAFE_BRANCH_NAME  = os.getenv('FORGE_SITE', get_github_branch_name())
-RDS_ROOT_USERNAME = os.getenv('MYSQL_ROOT_USERNAME', 'admin')
-RDS_ROOT_PASSWORD = os.getenv('MYSQL_ROOT_PASSWORD', 'admin')
-RDS_NAME          = os.getenv('CUSTOM_RDS_NAME', 'staging') # this needs to be fixed so the default is from a function not a static string.
-RDS_PR_DB_NAME    = os.getenv('CUSTOM_RDS_PR_NAME', get_rds_pr_db_name())
+# BRANCH_NAME       = os.getenv('GITHUB_BRANCH_NAME', 'dev')
+# SAFE_BRANCH_NAME  = os.getenv('FORGE_SITE', get_github_branch_name())
+# RDS_ROOT_USERNAME = os.getenv('MYSQL_ROOT_USERNAME', 'admin')
+# RDS_ROOT_PASSWORD = os.getenv('MYSQL_ROOT_PASSWORD', 'admin')
+# RDS_NAME          = os.getenv('CUSTOM_RDS_NAME', 'staging') # this needs to be fixed so the default is from a function not a static string.
+# RDS_PR_DB_NAME    = os.getenv('CUSTOM_RDS_PR_NAME', get_rds_pr_db_name())
 
 # print(RDS_NAME)
 # print(RDS_PR_DB_NAME)

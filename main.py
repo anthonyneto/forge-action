@@ -3,7 +3,7 @@ from manage_rds import *
 from manage_mysql import *
 from manage_site import *
 
-# BRANCH_NAME       = os.getenv('GITHUB_BRANCH_NAME', 'dev')
+BRANCH_NAME       = os.getenv('GITHUB_BRANCH_NAME', 'dev')
 # SAFE_BRANCH_NAME  = os.getenv('FORGE_SITE', get_github_branch_name())
 # RDS_ROOT_USERNAME = os.getenv('MYSQL_ROOT_USERNAME', 'admin')
 # RDS_ROOT_PASSWORD = os.getenv('MYSQL_ROOT_PASSWORD', 'admin')
@@ -38,4 +38,4 @@ from manage_site import *
 
 # forge_manage_site(BRANCH_NAME)
 
-hello_world()
+print(BRANCH_NAME)

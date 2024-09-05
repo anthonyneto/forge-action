@@ -4,8 +4,8 @@
 # runs:
 #   using: 'docker'
 #   image: 'Dockerfile'
-# name: 'Forge Action'
-# description: 'Create environments via the Forge API'
+name: 'Forge Action'
+description: 'Create environments via the Forge API'
 runs:
   using: 'python'
   steps:

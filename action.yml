@@ -1,28 +1,6 @@
 # action.yml
-# name: 'Forge Action'
-# description: 'Create environments via the Forge API'
-# runs:
-#   using: 'docker'
-#   image: 'Dockerfile'
 name: 'Forge Action'
 description: 'Create environments via the Forge API'
 runs:
-  using: 'python'
-  steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.9'
-
-    - name: Install dependencies
-      shell: bash
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-
-    - name: Setup
-      shell: bash
-      run: python .github/scripts/main.py
+  using: 'docker'
+  image: 'Dockerfile'

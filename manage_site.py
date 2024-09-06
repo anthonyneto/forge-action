@@ -1,22 +1,14 @@
-import os
 import requests
 
-from manage_functions import get_github_branch_name
-
-DEFAULT_ZONE = 'example.com'
-DEFAULT_PHP_VERSION = 'php82'
+DEFAULT_PHP_VERSION  = 'php82'
 DEFAULT_PROJECT_TYPE = 'php'
 DEFAULT_GIT_PROVIDER = 'github'
-DEFAULT_GIT_BRANCH = 'dev'
-DEFAULT_GIT_URL = 'bizhaven1/wapp'
 
-def get_default_site_domain():
-  zone = os.getenv('ZONE', DEFAULT_ZONE)
-  branch_name = get_github_branch_name() or 'unset'
-  return f'api.{branch_name}.app.{zone}'
+def DEFAULT_SITE_DOMAIN(branch, zone):
+  return f'api.{branch}.app.{zone}'
 
-def get_default_site_directory():
-  return f"/home/forge/{get_default_site_domain()}/public"
+def DEFAULT_SITE_DIRECTORY():
+  return f"/home/forge/{DEFAULT_SITE_DOMAIN()}/public"
 
 def get_sites(api_token, server_id):
   url = f'https://forge.laravel.com/api/v1/servers/{server_id}/sites'
@@ -72,7 +64,7 @@ def create_site(api_token, server_id, domain, directory, database, php_version=D
     return None
 
 
-def create_deployment_git(api_token, server_id, site_id, git_url=DEFAULT_GIT_URL, git_provider=DEFAULT_GIT_PROVIDER, git_branch=DEFAULT_GIT_BRANCH):
+def create_deployment_git(api_token, server_id, site_id, git_branch, git_url, git_provider=DEFAULT_GIT_PROVIDER):
   url = f'https://forge.laravel.com/api/v1/servers/{server_id}/sites/{site_id}/git'
   headers = {
     'Authorization': f'Bearer {api_token}',
@@ -93,7 +85,6 @@ def create_deployment_git(api_token, server_id, site_id, git_url=DEFAULT_GIT_URL
     print("Deployment created successfully.")
     return response_json
   except requests.RequestException as e:
-    # Log detailed error response
     if e.response is not None:
       try:
         error_details = e.response.json()
@@ -121,41 +112,30 @@ def handle_response(response):
   else:
     print("No response received.")
 
-def forge_manage_site(branch, database=''):
-  api_token = os.getenv('FORGE_API_TOKEN')
-  server_id = os.getenv('FORGE_SERVER_ID')
-  domain = os.getenv('FORGE_SITE', get_default_site_domain())
-  directory = os.getenv('FORGE_DIRECTORY', get_default_site_directory())
-
-  # Retrieve list of sites
+def forge_manage_site(api_token, server_id, branch, url, domain=DEFAULT_SITE_DOMAIN, directory=DEFAULT_SITE_DIRECTORY, database=''):
   sites = get_sites(api_token, server_id)
   if not isinstance(sites, list):
     print("Failed to retrieve sites.")
     return
 
-  # Check if the site already exists
   site_data = next((site for site in sites if site.get('name') == domain), None)
 
   if site_data:
     site_id = site_data['id']
     print(f"Site '{domain}' already exists.")
 
-    # Check if the deployment already exists
     deployments = get_deployment_history(api_token, server_id, site_id)
-    deployment_exists = any(d['repository'] == DEFAULT_GIT_URL and d['branch'] == branch for d in deployments)
+    deployment_exists = any(d['repository'] == url and d['branch'] == branch for d in deployments)
 
     if deployment_exists:
-      print(f"Deployment for {DEFAULT_GIT_URL} on branch {branch} already exists.")
+      print(f"Deployment for {url} on branch {branch} already exists.")
     else:
-      # Create deployment if it doesn't exist
       response = create_deployment_git(api_token, server_id, site_id, git_branch=branch)
       handle_response(response)
   else:
-    # Create site if it doesn't exist
     response = create_site(api_token, server_id, domain, directory, database)
     if response and 'data' in response:
       site_id = response['data']['id']
-      # Create deployment for the new site
       response = create_deployment_git(api_token, server_id, site_id, git_branch=branch)
       handle_response(response)
     else:

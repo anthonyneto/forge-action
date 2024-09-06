@@ -4,15 +4,17 @@ from manage_mysql import *
 from manage_site import *
 
 BRANCH_NAME       = os.getenv('GITHUB_BRANCH_NAME', 'dev')
-# SAFE_BRANCH_NAME  = os.getenv('FORGE_SITE', get_github_branch_name())
-# RDS_ROOT_USERNAME = os.getenv('MYSQL_ROOT_USERNAME', 'admin')
-# RDS_ROOT_PASSWORD = os.getenv('MYSQL_ROOT_PASSWORD', 'admin')
+SAFE_BRANCH_NAME  = os.getenv('FORGE_SITE', get_github_branch_name())
+
+# RDS_ROOT_USERNAME = os.getenv('RDS_ROOT_USERNAME')
+# RDS_ROOT_PASSWORD = os.getenv('RDS_ROOT_PASSWORD')
 # RDS_NAME          = os.getenv('CUSTOM_RDS_NAME', 'staging') # this needs to be fixed so the default is from a function not a static string.
 # RDS_PR_DB_NAME    = os.getenv('CUSTOM_RDS_PR_NAME', get_rds_pr_db_name())
 
-# print(RDS_NAME)
-# print(RDS_PR_DB_NAME)
-# print(os.getenv('MYSQL_ROOT_USERNAME'))
+FORGE_API_TOKEN = os.getenv('FORGE_API_TOKEN')
+FORGE_SERVER_ID = os.getenv('FORGE_SERVER_ID')
+FORGE_ZONE      = os.getenv('FORGE_ZONE')
+FORGE_GIT_URL   = os.getenv('FORGE_GIT_URL')
 
 # create_rds_instance(
 #   db_instance_id=RDS_NAME,
@@ -36,6 +38,10 @@ BRANCH_NAME       = os.getenv('GITHUB_BRANCH_NAME', 'dev')
 #   new_user_password=RDS_PR_DB_NAME
 # )
 
-# forge_manage_site(BRANCH_NAME)
-
-print(BRANCH_NAME)
+forge_manage_site(
+  api_token=FORGE_API_TOKEN,
+  branch=BRANCH_NAME,
+  git_url=FORGE_GIT_URL,
+  server_id=FORGE_SERVER_ID,
+  zone=FORGE_ZONE
+)

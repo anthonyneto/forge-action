@@ -1,13 +1,12 @@
 import requests
 
-DEFAULT_PHP_VERSION  = 'php82'
+DEFAULT_PHP_VERSION = 'php82'
 DEFAULT_PROJECT_TYPE = 'php'
 DEFAULT_GIT_PROVIDER = 'github'
 
 def get_sites(api_token, server_id):
   url = f'https://forge.laravel.com/api/v1/servers/{server_id}/sites'
   headers = {'Authorization': f'Bearer {api_token}'}
-
   try:
     response = requests.get(url, headers=headers)
     response.raise_for_status()
@@ -20,7 +19,6 @@ def get_sites(api_token, server_id):
 def get_deployment_history(api_token, server_id, site_id):
   url = f'https://forge.laravel.com/api/v1/servers/{server_id}/sites/{site_id}/deployment-history'
   headers = {'Authorization': f'Bearer {api_token}'}
-
   try:
     response = requests.get(url, headers=headers)
     response.raise_for_status()
@@ -43,7 +41,6 @@ def create_site(api_token, server_id, domain, directory, database, php_version=D
     "database": database,
     "php_version": php_version
   }
-
   try:
     response = requests.post(url, json=payload, headers=headers)
     response.raise_for_status()
@@ -57,7 +54,6 @@ def create_site(api_token, server_id, domain, directory, database, php_version=D
     print(f"Error creating site: {e}")
     return None
 
-
 def create_deployment_git(api_token, server_id, site_id, git_branch, git_url, git_provider=DEFAULT_GIT_PROVIDER):
   url = f'https://forge.laravel.com/api/v1/servers/{server_id}/sites/{site_id}/git'
   headers = {
@@ -69,7 +65,6 @@ def create_deployment_git(api_token, server_id, site_id, git_branch, git_url, gi
     'repository': git_url,
     'branch': git_branch
   }
-
   try:
     response = requests.post(url, json=payload, headers=headers)
     response.raise_for_status()
@@ -89,10 +84,9 @@ def create_deployment_git(api_token, server_id, site_id, git_branch, git_url, gi
       print(f"Error creating deployment: {e}")
     return None
 
-
 def handle_response(response):
   if response is not None:
-    if response.get('status_code', 200) == 200:
+    if response.get('status_code') == 200:
       print("Operation successful!")
     else:
       print(f"Failed to perform operation: {response.get('status_code', 'Unknown')}")
@@ -122,13 +116,13 @@ def forge_manage_site(api_token, domain, directory, server_id, branch, git_url, 
     if deployment_exists:
       print(f"Deployment for {git_url} on branch {branch} already exists.")
     else:
-      response = create_deployment_git(api_token, server_id, site_id, git_url, git_branch=branch)
+      response = create_deployment_git(api_token, server_id, site_id, branch, git_url)
       handle_response(response)
   else:
     response = create_site(api_token, server_id, domain, directory, database)
     if response and 'data' in response:
       site_id = response['data']['id']
-      response = create_deployment_git(api_token, server_id, site_id, git_url, git_branch=branch)
+      response = create_deployment_git(api_token, server_id, site_id, branch, git_url)
       handle_response(response)
     else:
       print("Failed to create site, cannot set up deployment.")

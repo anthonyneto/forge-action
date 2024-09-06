@@ -15,6 +15,9 @@ FORGE_API_TOKEN = os.getenv('FORGE_API_TOKEN')
 FORGE_SERVER_ID = os.getenv('FORGE_SERVER_ID')
 FORGE_ZONE      = os.getenv('FORGE_ZONE')
 FORGE_GIT_URL   = os.getenv('FORGE_GIT_URL')
+FORGE_DOMAIN    = os.getenv('FORGE_DOMAIN', DEFAULT_SITE_DOMAIN(BRANCH_NAME, FORGE_ZONE))
+FORGE_DIRECTORY = os.getenv('FORGE_SITE_DIRECTORY', DEFAULT_SITE_DIRECTORY(BRANCH_NAME, FORGE_ZONE))
+
 
 # create_rds_instance(
 #   db_instance_id=RDS_NAME,
@@ -43,5 +46,6 @@ forge_manage_site(
   branch=BRANCH_NAME,
   git_url=FORGE_GIT_URL,
   server_id=FORGE_SERVER_ID,
-  zone=FORGE_ZONE
+  domain=FORGE_DOMAIN,
+  directory=FORGE_DIRECTORY
 )

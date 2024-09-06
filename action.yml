@@ -2,7 +2,7 @@
 name: 'Forge Action'
 description: 'Create environments via the Forge API'
 inputs:
-  GITHUB_BRANCH:
+  GITHUB_BRANCH_NAME:
     description: 'git branch name'
     required: true
   RDS_ROOT_USERNAME:

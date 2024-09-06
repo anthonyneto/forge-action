@@ -31,5 +31,8 @@ def get_rds_pr_db_name():
   rds_pr_db_name = to_mysql_safe_string(os.getenv('GITHUB_BRANCH_NAME'))
   return rds_pr_db_name
 
-def hello_world():
-    print("Hello, World!")
+def DEFAULT_SITE_DOMAIN(branch, zone):
+  return f'api.{branch}.app.{zone}'
+
+def DEFAULT_SITE_DIRECTORY(branch, zone):
+  return f"/home/forge/{DEFAULT_SITE_DOMAIN(branch, zone)}/public"

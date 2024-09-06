@@ -4,7 +4,6 @@ from manage_mysql import *
 from manage_site import *
 
 BRANCH_NAME       = os.getenv('GITHUB_BRANCH_NAME', 'dev')
-SAFE_BRANCH_NAME  = os.getenv('FORGE_SITE', get_github_branch_name())
 
 # RDS_ROOT_USERNAME = os.getenv('RDS_ROOT_USERNAME')
 # RDS_ROOT_PASSWORD = os.getenv('RDS_ROOT_PASSWORD')

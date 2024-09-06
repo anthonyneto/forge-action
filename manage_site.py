@@ -54,7 +54,7 @@ def create_site(api_token, server_id, domain, directory, database, php_version=D
     print(f"Error creating site: {e}")
     return None
 
-def create_deployment_git(api_token, server_id, site_id, git_branch, git_url, git_provider=DEFAULT_GIT_PROVIDER):
+def create_deployment_git(api_token, server_id, site_id, branch, git_url, git_provider=DEFAULT_GIT_PROVIDER):
   url = f'https://forge.laravel.com/api/v1/servers/{server_id}/sites/{site_id}/git'
   headers = {
     'Authorization': f'Bearer {api_token}',
@@ -63,7 +63,7 @@ def create_deployment_git(api_token, server_id, site_id, git_branch, git_url, gi
   payload = {
     'provider': git_provider,
     'repository': git_url,
-    'branch': git_branch
+    'branch': branch
   }
   try:
     response = requests.post(url, json=payload, headers=headers)
@@ -84,20 +84,6 @@ def create_deployment_git(api_token, server_id, site_id, git_branch, git_url, gi
       print(f"Error creating deployment: {e}")
     return None
 
-def handle_response(response):
-  if response is not None:
-    if response.get('status_code') == 200:
-      print("Operation successful!")
-    else:
-      print(f"Failed to perform operation: {response.get('status_code', 'Unknown')}")
-      try:
-        error_details = response.json()
-        print("Error details:", error_details)
-      except ValueError:
-        print("Error response is not valid JSON:", response.text)
-  else:
-    print("No response received.")
-
 def forge_manage_site(api_token, domain, directory, server_id, branch, git_url, database=''):
   sites = get_sites(api_token, server_id)
   if not isinstance(sites, list):
@@ -116,13 +102,11 @@ def forge_manage_site(api_token, domain, directory, server_id, branch, git_url, 
     if deployment_exists:
       print(f"Deployment for {git_url} on branch {branch} already exists.")
     else:
-      response = create_deployment_git(api_token, server_id, site_id, branch, git_url)
-      handle_response(response)
+      create_deployment_git(api_token, server_id, site_id, branch, git_url)
   else:
     response = create_site(api_token, server_id, domain, directory, database)
     if response and 'data' in response:
       site_id = response['data']['id']
-      response = create_deployment_git(api_token, server_id, site_id, branch, git_url)
-      handle_response(response)
+      create_deployment_git(api_token, server_id, site_id, branch, git_url)
     else:
       print("Failed to create site, cannot set up deployment.")

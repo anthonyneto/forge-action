@@ -23,15 +23,12 @@ def to_mysql_safe_string(string):
 
     return string
 
-def get_github_branch_name():
-  branch_name = to_web_safe_string(os.getenv('GITHUB_BRANCH_NAME'))
-  return branch_name
-
-def get_rds_pr_db_name():
-  rds_pr_db_name = to_mysql_safe_string(os.getenv('GITHUB_BRANCH_NAME'))
+def get_rds_pr_db_name(branch):
+  rds_pr_db_name = to_mysql_safe_string(branch)
   return rds_pr_db_name
 
 def DEFAULT_SITE_DOMAIN(branch, zone):
+  branch = to_web_safe_string(branch)
   return f'api.{branch}.app.{zone}'
 
 def DEFAULT_SITE_DIRECTORY(branch, zone):

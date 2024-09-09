@@ -12,6 +12,14 @@ inputs:
     required: false
     default: 'us-east-1'
 
+  AWS_ACCESS_KEY_ID:
+    description: 'The AWS Access Key.'
+    required: true
+
+  AWS_SECRET_ACCESS_KEY:
+    description: 'The AWS Secret Key.'
+    required: true
+
   RDS_VPC_ID:
     description: 'The AWS VPC id used by RDS database.'
     required: true

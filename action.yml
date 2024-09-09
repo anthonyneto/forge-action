@@ -7,8 +7,12 @@ inputs:
     description: 'The name of the Git branch to be used for deployment.'
     required: true
 
-  RDS_ROOT_USERNAME:
-    description: 'The root username for the RDS database.'
+  RDS_VPC_ID:
+    description: 'The AWS VPC id used by RDS database.'
+    required: true
+
+  RDS_SUBNET_GROUP:
+    description: 'The Subnet Group used by the RDS database.'
     required: true
 
   RDS_ROOT_PASSWORD:

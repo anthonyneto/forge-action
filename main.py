@@ -3,12 +3,14 @@ from manage_rds import *
 from manage_mysql import *
 from manage_site import *
 
-BRANCH_NAME       = os.getenv('GITHUB_BRANCH_NAME', 'dev')
+BRANCH_NAME       = os.getenv('INPUT_GITHUB_BRANCH_NAME', 'dev')
 
-# RDS_ROOT_USERNAME = os.getenv('RDS_ROOT_USERNAME')
-# RDS_ROOT_PASSWORD = os.getenv('RDS_ROOT_PASSWORD')
-# RDS_NAME          = os.getenv('CUSTOM_RDS_NAME', 'staging') # this needs to be fixed so the default is from a function not a static string.
-# RDS_PR_DB_NAME    = os.getenv('CUSTOM_RDS_PR_NAME', get_rds_pr_db_name())
+RDS_VPC_ID        = os.getenv('INPUT_RDS_VPC_ID')
+RDS_SUBNET_GROUP  = os.getenv('INPUT_RDS_SUBNET_GROUP')
+RDS_ROOT_USERNAME = os.getenv('INPUT_RDS_ROOT_USERNAME')
+RDS_ROOT_PASSWORD = os.getenv('INPUT_RDS_ROOT_PASSWORD')
+RDS_NAME          = os.getenv('INPUT_CUSTOM_RDS_NAME', 'staging') # this needs to be fixed so the default is from a function not a static string.
+RDS_PR_DB_NAME    = os.getenv('INPUT_CUSTOM_RDS_PR_NAME', get_rds_pr_db_name())
 
 FORGE_API_TOKEN = os.getenv('INPUT_FORGE_API_TOKEN')
 FORGE_SERVER_ID = os.getenv('INPUT_FORGE_SERVER_ID')
@@ -17,27 +19,27 @@ FORGE_GIT_URL   = os.getenv('INPUT_FORGE_GIT_URL')
 FORGE_DOMAIN    = os.getenv('INPUT_FORGE_DOMAIN', DEFAULT_SITE_DOMAIN(BRANCH_NAME, FORGE_ZONE))
 FORGE_DIRECTORY = os.getenv('INPUT_FORGE_SITE_DIRECTORY', DEFAULT_SITE_DIRECTORY(BRANCH_NAME, FORGE_ZONE))
 
-# create_rds_instance(
-#   db_instance_id=RDS_NAME,
-#   master_username=RDS_ROOT_USERNAME,
-#   master_password=RDS_ROOT_PASSWORD,
-#   vpc_id='vpc-0e7cfb09a583f844e',
-#   db_subnet_group_name='rds-public'
-# )
+create_rds_instance(
+  db_instance_id=RDS_NAME,
+  master_username=RDS_ROOT_USERNAME,
+  master_password=RDS_ROOT_PASSWORD,
+  vpc_id=RDS_VPC_ID,
+  db_subnet_group_name=RDS_SUBNET_GROUP
+)
 
-# wait_for_db_instance_available(RDS_NAME)
+wait_for_db_instance_available(RDS_NAME)
 
-# RDS_HOST = get_rds_endpoint(RDS_NAME)
-# print(f"RDS instance public endpoint: {RDS_HOST}")
+RDS_HOST = get_rds_endpoint(RDS_NAME)
+print(f"RDS instance public endpoint: {RDS_HOST}")
 
-# create_database_and_user(
-#   host=RDS_HOST,
-#   user=RDS_ROOT_USERNAME,
-#   password=RDS_ROOT_PASSWORD,
-#   new_db_name=RDS_PR_DB_NAME,
-#   new_user=RDS_PR_DB_NAME,
-#   new_user_password=RDS_PR_DB_NAME
-# )
+create_database_and_user(
+  host=RDS_HOST,
+  user=RDS_ROOT_USERNAME,
+  password=RDS_ROOT_PASSWORD,
+  new_db_name=RDS_PR_DB_NAME,
+  new_user=RDS_PR_DB_NAME,
+  new_user_password=RDS_PR_DB_NAME
+)
 
 forge_manage_site(
   api_token=FORGE_API_TOKEN,

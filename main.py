@@ -39,6 +39,9 @@ FORGE_DIRECTORY = os.getenv('FORGE_SITE_DIRECTORY', DEFAULT_SITE_DIRECTORY(BRANC
 #   new_user_password=RDS_PR_DB_NAME
 # )
 
+for key, value in os.environ.items():
+    print(f"{key}: {value}")
+
 print(BRANCH_NAME)
 print(FORGE_SERVER_ID)
 print(FORGE_ZONE)

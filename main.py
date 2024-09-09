@@ -39,19 +39,11 @@ FORGE_DIRECTORY = os.getenv('INPUT_FORGE_SITE_DIRECTORY', DEFAULT_SITE_DIRECTORY
 #   new_user_password=RDS_PR_DB_NAME
 # )
 
-for key, value in os.environ.items():
-    print(f"{key}: {value}")
-
-print(BRANCH_NAME)
-print(FORGE_SERVER_ID)
-print(FORGE_ZONE)
-print(FORGE_GIT_URL)
-
-# forge_manage_site(
-#   api_token=FORGE_API_TOKEN,
-#   branch=BRANCH_NAME,
-#   git_url=FORGE_GIT_URL,
-#   server_id=FORGE_SERVER_ID,
-#   domain=FORGE_DOMAIN,
-#   directory=FORGE_DIRECTORY
-# )
+forge_manage_site(
+  api_token=FORGE_API_TOKEN,
+  branch=BRANCH_NAME,
+  git_url=FORGE_GIT_URL,
+  server_id=FORGE_SERVER_ID,
+  domain=FORGE_DOMAIN,
+  directory=FORGE_DIRECTORY
+)

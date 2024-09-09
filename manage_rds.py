@@ -12,8 +12,8 @@ session = boto3.Session(
   region_name=AWS_REGION
 )
 
-ec2_client = boto3.client('ec2')
-rds_client = boto3.client('rds')
+ec2_client = session.client('ec2')
+rds_client = session.client('rds')
 
 def create_or_update_security_group(
   group_name,

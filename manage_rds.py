@@ -99,9 +99,6 @@ def create_rds_instance(
   backup_retention_period=0,
   db_subnet_group_name=None
 ):
-  print(db_instance_id)
-  print(vpc_id)
-  exit()
 
   security_group_id = create_or_update_security_group(
     group_name=db_instance_id,

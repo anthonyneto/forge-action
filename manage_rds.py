@@ -20,6 +20,7 @@ def create_or_update_security_group(
   description,
   vpc_id
 ):
+  print(group_name)
   try:
     response = ec2_client.describe_security_groups(Filters=[
       {

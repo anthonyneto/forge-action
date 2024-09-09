@@ -40,6 +40,7 @@ FORGE_DIRECTORY = os.getenv('FORGE_SITE_DIRECTORY', DEFAULT_SITE_DIRECTORY(BRANC
 # )
 
 print(FORGE_SERVER_ID)
+print(FORGE_GIT_URL)
 
 forge_manage_site(
   api_token=FORGE_API_TOKEN,

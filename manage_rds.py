@@ -100,6 +100,7 @@ def create_rds_instance(
   db_subnet_group_name=None
 ):
   print(db_instance_id)
+  print(vpc_id)
   exit()
 
   security_group_id = create_or_update_security_group(

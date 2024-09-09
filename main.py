@@ -39,6 +39,8 @@ FORGE_DIRECTORY = os.getenv('FORGE_SITE_DIRECTORY', DEFAULT_SITE_DIRECTORY(BRANC
 #   new_user_password=RDS_PR_DB_NAME
 # )
 
+print(FORGE_SERVER_ID)
+
 forge_manage_site(
   api_token=FORGE_API_TOKEN,
   branch=BRANCH_NAME,

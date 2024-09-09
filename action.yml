@@ -28,6 +28,10 @@ inputs:
     description: 'The Subnet Group used by the RDS database.'
     required: true
 
+  RDS_ROOT_USERNAME:
+    description: 'The root username for the RDS database.'
+    required: true
+
   RDS_ROOT_PASSWORD:
     description: 'The root password for the RDS database.'
     required: true

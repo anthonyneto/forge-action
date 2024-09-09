@@ -9,8 +9,8 @@ RDS_VPC_ID        = os.getenv('INPUT_RDS_VPC_ID')
 RDS_SUBNET_GROUP  = os.getenv('INPUT_RDS_SUBNET_GROUP')
 RDS_ROOT_USERNAME = os.getenv('INPUT_RDS_ROOT_USERNAME')
 RDS_ROOT_PASSWORD = os.getenv('INPUT_RDS_ROOT_PASSWORD')
-RDS_NAME          = os.getenv('INPUT_CUSTOM_RDS_NAME', 'staging') # this needs to be fixed so the default is from a function not a static string.
-RDS_PR_DB_NAME    = os.getenv('INPUT_CUSTOM_RDS_PR_NAME', get_rds_pr_db_name())
+RDS_NAME          = os.getenv('INPUT_RDS_NAME', 'staging') # this needs to be fixed so the default is from a function not a static string.
+RDS_PR_DB_NAME    = os.getenv('INPUT_RDS_PR_NAME', get_rds_pr_db_name())
 
 FORGE_API_TOKEN = os.getenv('INPUT_FORGE_API_TOKEN')
 FORGE_SERVER_ID = os.getenv('INPUT_FORGE_SERVER_ID')

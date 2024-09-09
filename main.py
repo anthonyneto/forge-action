@@ -5,7 +5,6 @@ from manage_site import *
 
 BRANCH_NAME = os.getenv('INPUT_GITHUB_BRANCH_NAME', 'dev')
 
-AWS_REGION        = os.getenv('INPUT_AWS_REGION')
 RDS_VPC_ID        = os.getenv('INPUT_RDS_VPC_ID')
 RDS_SUBNET_GROUP  = os.getenv('INPUT_RDS_SUBNET_GROUP')
 RDS_ROOT_USERNAME = os.getenv('INPUT_RDS_ROOT_USERNAME')

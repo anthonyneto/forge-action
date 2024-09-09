@@ -1,12 +1,15 @@
+import os
 import boto3
 from botocore.exceptions import ClientError
+
+AWS_REGION = os.getenv('INPUT_AWS_REGION', 'us-east-1')
 
 def create_or_update_security_group(
   group_name,
   description,
   vpc_id
 ):
-  ec2_client = boto3.client('ec2')
+  ec2_client = boto3.client('ec2', region_name=AWS_REGION)
 
   try:
     response = ec2_client.describe_security_groups(Filters=[
@@ -87,7 +90,7 @@ def create_rds_instance(
   backup_retention_period=0,
   db_subnet_group_name=None
 ):
-  rds_client = boto3.client('rds')
+  rds_client = boto3.client('rds', region_name=AWS_REGION)
   security_group_id = create_or_update_security_group(
     group_name=db_instance_id,
     description=f'Security group for RDS: {db_instance_id}',
@@ -120,7 +123,7 @@ def create_rds_instance(
       raise
 
 def delete_rds_instance(db_instance_id, skip_final_snapshot=True):
-  rds_client = boto3.client('rds')
+  rds_client = boto3.client('rds', region_name=AWS_REGION)
 
   try:
     response = rds_client.describe_db_instances(DBInstanceIdentifier=db_instance_id)
@@ -139,7 +142,7 @@ def delete_rds_instance(db_instance_id, skip_final_snapshot=True):
       raise
 
 def wait_for_db_instance_available(db_instance_id, timeout=300):
-  rds_client = boto3.client('rds')
+  rds_client = boto3.client('rds', region_name=AWS_REGION)
 
   print(f"Waiting for RDS instance {db_instance_id} to be available with a timeout of {timeout} seconds...")
   try:
@@ -160,7 +163,7 @@ def wait_for_db_instance_available(db_instance_id, timeout=300):
     raise
 
 def get_rds_endpoint(db_instance_id):
-  rds_client = boto3.client('rds')
+  rds_client = boto3.client('rds', region_name=AWS_REGION)
 
   try:
     response = rds_client.describe_db_instances(DBInstanceIdentifier=db_instance_id)

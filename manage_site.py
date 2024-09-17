@@ -92,10 +92,10 @@ def forge_manage_site(api_token, domain, directory, server_id, branch, git_url, 
 
   site_data = next((site for site in sites if site.get('name') == domain), None)
 
-  print(sites)
-  print(site_data)
-  print(domain)
-  exit(0)
+  # print(sites)
+  # print(site_data)
+  # print(domain)
+  # exit(0)
 
   if site_data:
     site_id = site_data['id']

@@ -4,7 +4,6 @@ from manage_mysql import *
 from manage_site import *
 
 BRANCH_NAME = os.getenv('INPUT_GITHUB_BRANCH_NAME', 'dev')
-print(BRANCH_NAME)
 
 RDS_VPC_ID        = os.getenv('INPUT_RDS_VPC_ID')
 RDS_SUBNET_GROUP  = os.getenv('INPUT_RDS_SUBNET_GROUP')

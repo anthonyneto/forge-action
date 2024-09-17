@@ -41,6 +41,8 @@ def create_site(api_token, server_id, domain, directory, database, php_version=D
     "database": database,
     "php_version": php_version
   }
+  print('debug ###### debug')
+  print(payload)
   try:
     response = requests.post(url, json=payload, headers=headers)
     response.raise_for_status()

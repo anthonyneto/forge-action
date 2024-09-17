@@ -41,8 +41,6 @@ def create_site(api_token, server_id, domain, directory, database, php_version=D
     "database": database,
     "php_version": php_version
   }
-  print('debug ###### debug')
-  print(payload)
   try:
     response = requests.post(url, json=payload, headers=headers)
     response.raise_for_status()
@@ -67,6 +65,8 @@ def create_deployment_git(api_token, server_id, site_id, branch, git_url, git_pr
     'repository': git_url,
     'branch': branch
   }
+  print('debug ###### debug')
+  print(payload)
   try:
     response = requests.post(url, json=payload, headers=headers)
     response.raise_for_status()

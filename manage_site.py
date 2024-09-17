@@ -90,11 +90,12 @@ def forge_manage_site(api_token, domain, directory, server_id, branch, git_url, 
     print("Failed to retrieve sites.")
     return
 
+  site_data = next((site for site in sites if site.get('name') == domain), None)
+
   print(sites)
+  print(site_data)
   print(domain)
   exit(0)
-
-  site_data = next((site for site in sites if site.get('name') == domain), None)
 
   if site_data:
     site_id = site_data['id']

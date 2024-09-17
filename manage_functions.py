@@ -29,7 +29,7 @@ def get_rds_pr_db_name(branch):
 
 def DEFAULT_SITE_DOMAIN(branch, zone):
   branch = to_web_safe_string(branch)
-  return f'api.{branch}.app.{zone}'
+  return f'{branch}.api.app.{zone}'
 
 def DEFAULT_SITE_DIRECTORY(branch, zone):
   return f"/home/forge/{DEFAULT_SITE_DOMAIN(branch, zone)}/public"

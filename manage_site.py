@@ -1,5 +1,6 @@
 import requests
 
+DEFAULT_USERNAME = 'forge'
 DEFAULT_PHP_VERSION = 'php82'
 DEFAULT_PROJECT_TYPE = 'php'
 DEFAULT_GIT_PROVIDER = 'github'
@@ -27,7 +28,7 @@ def get_deployment_history(api_token, server_id, site_id):
     print(f"Error fetching deployments: {e}")
     return []
 
-def create_site(api_token, server_id, domain, directory, database, php_version=DEFAULT_PHP_VERSION, project_type=DEFAULT_PROJECT_TYPE, username='forge'):
+def create_site(api_token, server_id, domain, directory, database, php_version=DEFAULT_PHP_VERSION, project_type=DEFAULT_PROJECT_TYPE, username=DEFAULT_USERNAME):
   url = f'https://forge.laravel.com/api/v1/servers/{server_id}/sites'
   headers = {
     'Authorization': f'Bearer {api_token}',
@@ -43,6 +44,8 @@ def create_site(api_token, server_id, domain, directory, database, php_version=D
   }
   try:
     response = requests.post(url, json=payload, headers=headers)
+    print('debug ####### debug')
+    print(response)
     response.raise_for_status()
     response_json = response.json()
     if 'data' in response_json:

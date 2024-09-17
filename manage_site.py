@@ -65,8 +65,6 @@ def create_deployment_git(api_token, server_id, site_id, branch, git_url, git_pr
     'repository': git_url,
     'branch': branch
   }
-  print('debug ###### debug')
-  print(payload)
   try:
     response = requests.post(url, json=payload, headers=headers)
     response.raise_for_status()
@@ -94,11 +92,6 @@ def forge_manage_site(api_token, domain, directory, server_id, branch, git_url, 
 
   site_data = next((site for site in sites if site.get('name') == domain), None)
 
-  # print(sites)
-  # print(site_data)
-  # print(domain)
-  # exit(0)
-
   if site_data:
     site_id = site_data['id']
     print(f"Site '{domain}' already exists.")
@@ -112,6 +105,8 @@ def forge_manage_site(api_token, domain, directory, server_id, branch, git_url, 
       create_deployment_git(api_token, server_id, site_id, branch, git_url)
   else:
     response = create_site(api_token, server_id, domain, directory, database)
+    print('debug ###### debug')
+    print(response)
     if response and 'data' in response:
       site_id = response['data']['id']
       create_deployment_git(api_token, server_id, site_id, branch, git_url)

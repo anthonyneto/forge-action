@@ -5,7 +5,6 @@ DEFAULT_PROJECT_TYPE = 'php'
 DEFAULT_GIT_PROVIDER = 'github'
 
 def get_sites(api_token, server_id):
-  print(server_id) # debug
   url = f'https://forge.laravel.com/api/v1/servers/{server_id}/sites'
   headers = {'Authorization': f'Bearer {api_token}'}
   try:
@@ -93,6 +92,7 @@ def forge_manage_site(api_token, domain, directory, server_id, branch, git_url, 
 
   print(sites)
   print(domain)
+  exit(0)
 
   site_data = next((site for site in sites if site.get('name') == domain), None)
 

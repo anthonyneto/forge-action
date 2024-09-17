@@ -47,7 +47,9 @@ def create_site(api_token, server_id, domain, directory, database, php_version=D
     print('debug ####### debug')
     print(response)
     response.raise_for_status()
+    print(response)
     response_json = response.json()
+    print(response_json)
     if 'data' in response_json:
       return response_json
     else:

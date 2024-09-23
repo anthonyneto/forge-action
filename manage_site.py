@@ -1,3 +1,4 @@
+import time
 import requests
 
 DEFAULT_USERNAME = 'forge'
@@ -95,6 +96,18 @@ def create_deployment_git(api_token, server_id, site_id, branch, git_url, git_pr
     handle_request_error(e, "creating deployment")
     return None
 
+def check_site_status(api_token, server_id, site_id):
+  while True:
+    site_details = get_sites(api_token, server_id)
+    if isinstance(site_details, list):
+      site_data = next((site for site in site_details if site['id'] == site_id), None)
+      if site_data:
+        if site_data['status'] != 'installing':
+          return site_data
+        else:
+          print("Site is still installing, checking again in 5 seconds...")
+    time.sleep(5)
+
 def forge_manage_site(api_token, domain, directory, server_id, branch, git_url, database=''):
   sites = get_sites(api_token, server_id)
   if not isinstance(sites, list):
@@ -118,6 +131,10 @@ def forge_manage_site(api_token, domain, directory, server_id, branch, git_url, 
     response = create_site(api_token, server_id, domain, directory, database)
     if response and 'data' in response:
       site_id = response['data']['id']
-      create_deployment_git(api_token, server_id, site_id, branch, git_url)
+      final_site_data = check_site_status(api_token, server_id, site_id)
+      if final_site_data:
+        create_deployment_git(api_token, server_id, site_id, branch, git_url)
+      else:
+        print("Failed to confirm site status after creation.")
     else:
       print("Failed to create site, cannot set up deployment.")

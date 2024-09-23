@@ -7,7 +7,6 @@ DEFAULT_PROJECT_TYPE = 'php'
 DEFAULT_GIT_PROVIDER = 'github'
 
 def handle_request_error(e, action):
-  """Helper function to handle request errors."""
   if e.response is not None:
     try:
       error_details = e.response.json()
@@ -106,6 +105,9 @@ def check_site_status(api_token, server_id, site_id):
           return site_data
         else:
           print("Site is still installing, checking again in 5 seconds...")
+    else:
+      print("Failed to retrieve site details.")
+      return None
     time.sleep(5)
 
 def forge_manage_site(api_token, domain, directory, server_id, branch, git_url, database=''):
@@ -131,6 +133,7 @@ def forge_manage_site(api_token, domain, directory, server_id, branch, git_url, 
     response = create_site(api_token, server_id, domain, directory, database)
     if response and 'data' in response:
       site_id = response['data']['id']
+      print("Waiting for site installation to complete...")
       final_site_data = check_site_status(api_token, server_id, site_id)
       if final_site_data:
         create_deployment_git(api_token, server_id, site_id, branch, git_url)

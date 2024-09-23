@@ -5,16 +5,28 @@ DEFAULT_PHP_VERSION = 'php82'
 DEFAULT_PROJECT_TYPE = 'php'
 DEFAULT_GIT_PROVIDER = 'github'
 
+def handle_request_error(e, action):
+  """Helper function to handle request errors."""
+  if e.response is not None:
+    try:
+      error_details = e.response.json()
+      print(f"Error during {action}: {e}")
+      print("Error details:", error_details)
+    except ValueError:
+      print(f"Error during {action}: {e}")
+      print("Error response is not valid JSON:", e.response.text)
+  else:
+    print(f"Error during {action}: {e}")
+
 def get_sites(api_token, server_id):
   url = f'https://forge.laravel.com/api/v1/servers/{server_id}/sites'
   headers = {'Authorization': f'Bearer {api_token}'}
   try:
     response = requests.get(url, headers=headers)
     response.raise_for_status()
-    sites_data = response.json()
-    return sites_data.get('sites', [])
+    return response.json().get('sites', [])
   except requests.RequestException as e:
-    print(f"Error fetching sites: {e}")
+    handle_request_error(e, "fetching sites")
     return []
 
 def get_deployment_history(api_token, server_id, site_id):
@@ -25,7 +37,7 @@ def get_deployment_history(api_token, server_id, site_id):
     response.raise_for_status()
     return response.json().get('deployments', [])
   except requests.RequestException as e:
-    print(f"Error fetching deployments: {e}")
+    handle_request_error(e, "fetching deployments")
     return []
 
 def create_site(api_token, server_id, domain, directory, database, php_version=DEFAULT_PHP_VERSION, project_type=DEFAULT_PROJECT_TYPE, username=DEFAULT_USERNAME):
@@ -44,19 +56,15 @@ def create_site(api_token, server_id, domain, directory, database, php_version=D
   }
   try:
     response = requests.post(url, json=payload, headers=headers)
-    print('debug ####### debug')
-    print(response)
     response.raise_for_status()
-    print(response)
     response_json = response.json()
-    print(response_json)
     if 'data' in response_json:
       return response_json
     else:
       print("Unexpected response structure:", response_json)
       return None
   except requests.RequestException as e:
-    print(f"Error creating site: {e}")
+    handle_request_error(e, "creating site")
     return None
 
 def create_deployment_git(api_token, server_id, site_id, branch, git_url, git_provider=DEFAULT_GIT_PROVIDER):
@@ -73,20 +81,9 @@ def create_deployment_git(api_token, server_id, site_id, branch, git_url, git_pr
   try:
     response = requests.post(url, json=payload, headers=headers)
     response.raise_for_status()
-    response_json = response.json()
-    print("Deployment created successfully.")
-    return response_json
+    return response.json()
   except requests.RequestException as e:
-    if e.response is not None:
-      try:
-        error_details = e.response.json()
-        print(f"Error creating deployment: {e}")
-        print("Error details:", error_details)
-      except ValueError:
-        print(f"Error creating deployment: {e}")
-        print("Error response is not valid JSON:", e.response.text)
-    else:
-      print(f"Error creating deployment: {e}")
+    handle_request_error(e, "creating deployment")
     return None
 
 def forge_manage_site(api_token, domain, directory, server_id, branch, git_url, database=''):
@@ -110,8 +107,6 @@ def forge_manage_site(api_token, domain, directory, server_id, branch, git_url, 
       create_deployment_git(api_token, server_id, site_id, branch, git_url)
   else:
     response = create_site(api_token, server_id, domain, directory, database)
-    print('debug ###### debug')
-    print(response)
     if response and 'data' in response:
       site_id = response['data']['id']
       create_deployment_git(api_token, server_id, site_id, branch, git_url)

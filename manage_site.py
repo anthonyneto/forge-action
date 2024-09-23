@@ -142,6 +142,7 @@ def forge_manage_site(api_token, domain, directory, server_id, branch, git_url, 
       print("Waiting for site installation to complete...")
       final_site_data = check_site_status(api_token, server_id, site_id)
       if final_site_data:
+        time.sleep(10)
         create_deployment_git(api_token, server_id, site_id, branch, git_url)
       else:
         print("Failed to confirm site status after creation.")

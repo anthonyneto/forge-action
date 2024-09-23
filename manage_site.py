@@ -81,7 +81,12 @@ def create_deployment_git(api_token, server_id, site_id, branch, git_url, git_pr
   try:
     response = requests.post(url, json=payload, headers=headers)
     response.raise_for_status()
-    return response.json()
+    response_json = response.json()
+    if response_json.get('success'):
+      return response_json
+    else:
+      print("Unexpected response structure:", response_json)
+      return None
   except requests.RequestException as e:
     handle_request_error(e, "creating deployment")
     return None

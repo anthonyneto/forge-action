@@ -95,7 +95,8 @@ def create_deployment_git(api_token, server_id, site_id, branch, git_url, git_pr
     handle_request_error(e, "creating deployment")
     return None
 
-def check_site_status(api_token, server_id, site_id):
+def check_site_status(api_token, server_id, site_id, timeout=300):
+  start_time = time.time()
   while True:
     site_details = get_sites(api_token, server_id)
     if isinstance(site_details, list):
@@ -108,6 +109,11 @@ def check_site_status(api_token, server_id, site_id):
     else:
       print("Failed to retrieve site details.")
       return None
+
+    if time.time() - start_time > timeout:
+      print("Timeout reached while waiting for site to install.")
+      return None
+
     time.sleep(5)
 
 def forge_manage_site(api_token, domain, directory, server_id, branch, git_url, database=''):

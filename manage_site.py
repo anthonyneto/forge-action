@@ -91,7 +91,7 @@ def create_deployment_git(api_token, server_id, site_id, branch, git_url, git_pr
     handle_request_error(e, "creating deployment")
     return None
 
-def check_site_status(api_token, server_id, site_id, timeout=300):
+def check_site_status(api_token, server_id, site_id, timeout=180):
   start_time = time.time()
   while True:
     site_details = get_sites(api_token, server_id)
@@ -99,6 +99,8 @@ def check_site_status(api_token, server_id, site_id, timeout=300):
     if isinstance(site_details, list):
       site_data = next((site for site in site_details if site['id'] == site_id), None)
       print(site_data)
+      print('debug ################## debug')
+      print(site_data['status'])
       if site_data:
         if site_data['status'] == 'installed':
           return site_data

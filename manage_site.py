@@ -95,8 +95,10 @@ def check_site_status(api_token, server_id, site_id, timeout=300):
   start_time = time.time()
   while True:
     site_details = get_sites(api_token, server_id)
+    print(site_details)
     if isinstance(site_details, list):
       site_data = next((site for site in site_details if site['id'] == site_id), None)
+      print(site_data)
       if site_data:
         if site_data['status'] == 'installed':
           return site_data

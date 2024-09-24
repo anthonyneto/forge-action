@@ -93,24 +93,32 @@ def create_deployment_git(api_token, server_id, site_id, branch, git_url, git_pr
 
 def check_site_status(api_token, server_id, site_id, timeout=180):
   start_time = time.time()
+
+  print(site_id)
+
   while True:
     site_details = get_sites(api_token, server_id)
+    print(site_details)
+
     if isinstance(site_details, list):
       site_data = next((site for site in site_details if site['id'] == site_id), None)
+      print(site_data)
+
       if site_data:
-        print(f"Checking site status: {site_data['status']}")
         if site_data['status'] == 'installed':
           return site_data
         else:
           print("Site is not installed yet, checking again in 5 seconds...")
       else:
-        print("Site not found in the retrieved list.")
+        print("Site data not found.")
     else:
       print("Failed to retrieve site details.")
       return None
+
     if time.time() - start_time > timeout:
       print("Timeout reached while waiting for site to install.")
       return None
+
     time.sleep(5)
 
 def forge_manage_site(api_token, domain, directory, server_id, branch, git_url, database=''):

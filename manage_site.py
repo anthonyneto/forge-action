@@ -91,7 +91,7 @@ def create_deployment_git(api_token, server_id, site_id, branch, git_url, git_pr
     handle_request_error(e, "creating deployment")
     return None
 
-def check_site_status(api_token, server_id, site_id, timeout=180):
+def check_site_status(api_token, server_id, site_id, timeout=300):
   start_time = time.time()
 
   while True:

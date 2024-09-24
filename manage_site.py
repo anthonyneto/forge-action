@@ -75,6 +75,7 @@ def create_deployment_git(api_token, server_id, site_id, branch, git_url, git_pr
     'branch': branch,
     'composer': 'true'
   }
+  print(payload)
 
   try:
     response = requests.post(url, json=payload, headers=headers)

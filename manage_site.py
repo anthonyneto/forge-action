@@ -96,12 +96,9 @@ def check_site_status(api_token, server_id, site_id, timeout=180):
 
   while True:
     site_details = get_sites(api_token, server_id)
-    print(f'site details: {site_details}')
 
     if isinstance(site_details, list):
       site_data = next((site for site in site_details if site['id'] == site_id), None)
-      print(f"site data: {site_data}")
-
       if site_data:
         if site_data['status'] == 'installed':
           return site_data
@@ -132,9 +129,6 @@ def forge_manage_site(api_token, domain, directory, server_id, branch, git_url, 
     print(f"Site '{domain}' already exists.")
   else:
     response = create_site(api_token, server_id, domain, directory, database)
-
-    print(f'create site: {response}')
-
     if response:
       site_id = response['site']['id']
       print(f"Waiting for site installation to complete for site id: {site_id}")

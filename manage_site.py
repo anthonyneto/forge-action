@@ -72,7 +72,8 @@ def create_deployment_git(api_token, server_id, site_id, branch, git_url, git_pr
   payload = {
     'provider': git_provider,
     'repository': git_url,
-    'branch': branch
+    'branch': branch,
+    'composer': true
   }
 
   try:

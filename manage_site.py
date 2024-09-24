@@ -23,7 +23,7 @@ def get_sites(api_token, server_id):
   headers = {'Authorization': f'Bearer {api_token}'}
   try:
     response = requests.get(url, headers=headers)
-    print(f'get_sites: {get_sites}')
+    print(f'get_sites: {response}')
     response.raise_for_status()
     return response.json().get('sites', [])
   except requests.RequestException as e:

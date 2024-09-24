@@ -94,15 +94,16 @@ def create_deployment_git(api_token, server_id, site_id, branch, git_url, git_pr
 def check_site_status(api_token, server_id, site_id, timeout=180):
   start_time = time.time()
 
-  print(site_id)
+  print(f"site id: {site_id}")
 
   while True:
     site_details = get_sites(api_token, server_id)
-    print(site_details)
+    print(f"site_details site_details}")
 
     if isinstance(site_details, list):
       site_data = next((site for site in site_details if site['id'] == site_id), None)
-      print(site_data)
+      print(f"site data: {site_data}")
+      exit()
 
       if site_data:
         if site_data['status'] == 'installed':
@@ -127,9 +128,6 @@ def forge_manage_site(api_token, domain, directory, server_id, branch, git_url, 
     print("Failed to retrieve sites.")
     return
 
-  print(f"sites: {sites}")
-  exit
-
   site_data = next((site for site in sites if site.get('name') == domain), None)
 
   if site_data:
@@ -139,7 +137,7 @@ def forge_manage_site(api_token, domain, directory, server_id, branch, git_url, 
     response = create_site(api_token, server_id, domain, directory, database)
     if response:
       site_id = response.get('data', {}).get('id')
-      print("Waiting for site installation to complete...")
+      print(f"Waiting for site installation to complete for site id: {site_id}")
       site_data = check_site_status(api_token, server_id, site_id)
       if not site_data:
         print("Failed to confirm site status after creation.")

@@ -96,6 +96,7 @@ def check_site_status(api_token, server_id, site_id, timeout=180):
 
   while True:
     site_details = get_sites(api_token, server_id)
+    print(f'site details: {site_details}')
 
     if isinstance(site_details, list):
       site_data = next((site for site in site_details if site['id'] == site_id), None)

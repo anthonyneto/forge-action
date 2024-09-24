@@ -94,16 +94,12 @@ def create_deployment_git(api_token, server_id, site_id, branch, git_url, git_pr
 def check_site_status(api_token, server_id, site_id, timeout=180):
   start_time = time.time()
 
-  print(f"site id: {site_id}")
-
   while True:
     site_details = get_sites(api_token, server_id)
-    print(f"site_details {site_details}")
 
     if isinstance(site_details, list):
       site_data = next((site for site in site_details if site['id'] == site_id), None)
       print(f"site data: {site_data}")
-      exit()
 
       if site_data:
         if site_data['status'] == 'installed':

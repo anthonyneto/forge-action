@@ -1,3 +1,4 @@
+import json
 import time
 import requests
 
@@ -132,11 +133,11 @@ def forge_manage_site(api_token, domain, directory, server_id, branch, git_url, 
     print(f"Site '{domain}' already exists.")
   else:
     response = create_site(api_token, server_id, domain, directory, database)
-
-    print(f'create site: {response}')
+    response_dict = json.loads(response)
+    print(f'create site: {response_dict}')
 
     if response:
-      site_id = response.get('data', {}).get('id')
+      site_id = response_dict['site']['id']
       print(f"Waiting for site installation to complete for site id: {site_id}")
       # site_data = check_site_status(api_token, server_id, site_id)
       check_site_status(api_token, server_id, site_id)

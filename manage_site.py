@@ -81,7 +81,7 @@ def create_deployment_git(api_token, server_id, site_id, branch, git_url, git_pr
     response_json = response.json()
 
     if 'site' in response_json:
-      print("Deployment created, site details:", response_json['site'])
+      print("Deployment created")
       return response_json
     else:
       print("Unexpected response structure from create_deployment_git:", response_json)

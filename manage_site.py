@@ -72,7 +72,8 @@ def create_deployment_git(api_token, server_id, site_id, branch, git_url, git_pr
   payload = {
     'provider': git_provider,
     'repository': git_url,
-    'branch': branch
+    'branch': branch,
+    'composer': 'true'
   }
 
   try:
@@ -116,6 +117,22 @@ def check_site_status(api_token, server_id, site_id, timeout=300):
 
     time.sleep(5)
 
+def deploy_now(api_token, server_id, site_id):
+  url = f'https://forge.laravel.com/api/v1/servers/{server_id}/sites/{site_id}/deployment/deploy'
+  headers = {
+    'Authorization': f'Bearer {api_token}',
+    'Content-Type': 'application/json'
+  }
+
+  try:
+    response = requests.post(url, headers=headers)
+    response.raise_for_status()
+    print("Deployment triggered successfully.")
+    return response.json()
+  except requests.RequestException as e:
+    handle_request_error(e, "triggering deployment")
+    return None
+
 def forge_manage_site(api_token, domain, directory, server_id, branch, git_url, database=''):
   sites = get_sites(api_token, server_id)
   if not isinstance(sites, list):
@@ -147,3 +164,5 @@ def forge_manage_site(api_token, domain, directory, server_id, branch, git_url, 
     print(f"Deployment for {git_url} on branch {branch} already exists.")
   else:
     create_deployment_git(api_token, server_id, site_id, branch, git_url)
+
+  deploy_now(api_token, server_id, site_id)

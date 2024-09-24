@@ -54,15 +54,11 @@ def create_site(api_token, server_id, domain, directory, database, php_version=D
     "database": database,
     "php_version": php_version
   }
+
   try:
     response = requests.post(url, json=payload, headers=headers)
     response.raise_for_status()
-    response_json = response.json()
-    if 'data' in response_json:
-      return response_json
-    else:
-      print("Unexpected response structure from create_site:", response_json)
-      return None
+    return response.json()
   except requests.RequestException as e:
     handle_request_error(e, "creating site")
     return None
@@ -102,10 +98,10 @@ def check_site_status(api_token, server_id, site_id, timeout=300):
     if isinstance(site_details, list):
       site_data = next((site for site in site_details if site['id'] == site_id), None)
       if site_data:
-        if site_data['status'] != 'installing':
+        if site_data['status'] == 'installed':
           return site_data
         else:
-          print("Site is still installing, checking again in 5 seconds...")
+          print("Site is not installed yet, checking again in 5 seconds...")
     else:
       print("Failed to retrieve site details.")
       return None
@@ -129,8 +125,8 @@ def forge_manage_site(api_token, domain, directory, server_id, branch, git_url, 
     print(f"Site '{domain}' already exists.")
   else:
     response = create_site(api_token, server_id, domain, directory, database)
-    if response and 'data' in response:
-      site_id = response['data']['id']
+    if response:
+      site_id = response.get('data', {}).get('id')
       print("Waiting for site installation to complete...")
       site_data = check_site_status(api_token, server_id, site_id)
       if not site_data:

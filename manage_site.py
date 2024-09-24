@@ -61,7 +61,7 @@ def create_site(api_token, server_id, domain, directory, database, php_version=D
     if 'data' in response_json:
       return response_json
     else:
-      print("Unexpected response structure:", response_json)
+      print("Unexpected response structure from create_site:", response_json)
       return None
   except requests.RequestException as e:
     handle_request_error(e, "creating site")
@@ -88,7 +88,7 @@ def create_deployment_git(api_token, server_id, site_id, branch, git_url, git_pr
       print("Deployment created, site details:", response_json['site'])
       return response_json
     else:
-      print("Unexpected response structure:", response_json)
+      print("Unexpected response structure from create_deployment_git:", response_json)
       return None
 
   except requests.RequestException as e:
@@ -127,24 +127,23 @@ def forge_manage_site(api_token, domain, directory, server_id, branch, git_url, 
   if site_data:
     site_id = site_data['id']
     print(f"Site '{domain}' already exists.")
-
-    deployments = get_deployment_history(api_token, server_id, site_id)
-    deployment_exists = any(d['repository'] == git_url and d['branch'] == branch for d in deployments)
-
-    if deployment_exists:
-      print(f"Deployment for {git_url} on branch {branch} already exists.")
-    else:
-      create_deployment_git(api_token, server_id, site_id, branch, git_url)
   else:
     response = create_site(api_token, server_id, domain, directory, database)
     if response and 'data' in response:
       site_id = response['data']['id']
       print("Waiting for site installation to complete...")
-      final_site_data = check_site_status(api_token, server_id, site_id)
-      if final_site_data:
-        time.sleep(10)
-        create_deployment_git(api_token, server_id, site_id, branch, git_url)
-      else:
+      site_data = check_site_status(api_token, server_id, site_id)
+      if not site_data:
         print("Failed to confirm site status after creation.")
+        return
     else:
       print("Failed to create site, cannot set up deployment.")
+      return
+
+  deployments = get_deployment_history(api_token, server_id, site_id)
+  deployment_exists = any(d['repository'] == git_url and d['branch'] == branch for d in deployments)
+
+  if deployment_exists:
+    print(f"Deployment for {git_url} on branch {branch} already exists.")
+  else:
+    create_deployment_git(api_token, server_id, site_id, branch, git_url)

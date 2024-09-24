@@ -132,10 +132,15 @@ def forge_manage_site(api_token, domain, directory, server_id, branch, git_url, 
     print(f"Site '{domain}' already exists.")
   else:
     response = create_site(api_token, server_id, domain, directory, database)
+
+    print(f'create site: {response}')
+
     if response:
       site_id = response.get('data', {}).get('id')
       print(f"Waiting for site installation to complete for site id: {site_id}")
-      site_data = check_site_status(api_token, server_id, site_id)
+      # site_data = check_site_status(api_token, server_id, site_id)
+      check_site_status(api_token, server_id, site_id)
+      exit()
       if not site_data:
         print("Failed to confirm site status after creation.")
         return

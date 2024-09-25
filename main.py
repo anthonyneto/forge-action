@@ -66,8 +66,8 @@ FORGE_ENV_OVERRIDES = {
 # )
 
 forge_manage_site_env(
-  api_token=os.getenv('FORGE_TOKEN'),
-  server_id=os.getenv('FORGE_SERVER_ID'),
+  api_token=FORGE_API_TOKEN,
+  server_id=FORGE_SERVER_ID,
   site_name='ci-pr-environments.api.app.bizhaven.com',
   overrides=FORGE_ENV_OVERRIDES
 )

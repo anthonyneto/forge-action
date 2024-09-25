@@ -51,12 +51,12 @@ forge_manage_site(
   directory=FORGE_DIRECTORY
 )
 
-FORGE_ENV_OVERRIDES = {
-  "APP_URL": f"https://{FORGE_DOMAIN}",
-  "DB_HOST": RDS_HOST,
-  "DB_USERNAME": RDS_PR_DB_NAME,
-  "DB_PASSWORD": RDS_PR_DB_NAME
-}
+# FORGE_ENV_OVERRIDES = {
+#   "APP_URL": f"https://{FORGE_DOMAIN}",
+#   "DB_HOST": RDS_HOST,
+#   "DB_USERNAME": RDS_PR_DB_NAME,
+#   "DB_PASSWORD": RDS_PR_DB_NAME
+# }
 
 # forge_manage_site_env(
 #   api_token=FORGE_API_TOKEN,
@@ -64,6 +64,11 @@ FORGE_ENV_OVERRIDES = {
 #   site_name=FORGE_DOMAIN,
 #   overrides=FORGE_ENV_OVERRIDES
 # )
+
+FORGE_ENV_OVERRIDES = {
+  "APP_URL": "https://ci-pr-environments.api.app.bizhaven.com/test",
+  "DB_HOST": "staging.ckaqvri2ycor.us-west-2.rds.amazonaws.com"
+}
 
 forge_manage_site_env(
   api_token=FORGE_API_TOKEN,

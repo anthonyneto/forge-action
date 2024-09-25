@@ -74,7 +74,6 @@ def update_environment_variables(api_token, server_id, site_id, content, overrid
 def forge_manage_site_env(api_token, server_id, site_name, overrides):
   print('Starting Update: .env')
   site_id = get_site_id(api_token, server_id, site_name)
-  print(site_id)
   current_environment_variables = get_environment_variables(api_token, server_id, site_id)
   update_environment_variables(api_token, server_id, site_id, current_environment_variables, overrides)
   print('Finished Update: .env')

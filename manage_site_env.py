@@ -98,6 +98,7 @@ def update_environment_variables(server_id, site_id, content, overrides):
     print(f"An error occurred while updating environment variables: {err}")
 
 def forge_manage_site_env(api_token, server_id, site_name, overrides):
+  print('Updating .env')
   site_id = get_site_id(api_token, server_id, site_name)
   current_environment_variables = get_environment_variables(server_id, site_id)
   update_environment_variables(server_id, site_id, current_environment_variables, overrides)

@@ -61,6 +61,7 @@ def update_environment_variables(api_token, server_id, site_id, content, overrid
 
   try:
     response = requests.put(url, headers=headers, json=payload)
+    print(response.text)
     response.raise_for_status()
     return response.text
   except requests.exceptions.HTTPError as err:

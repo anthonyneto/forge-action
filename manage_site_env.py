@@ -72,20 +72,9 @@ def update_environment_variables(api_token, server_id, site_id, content, overrid
     print(f"An error occurred while updating environment variables: {err}")
 
 def forge_manage_site_env(api_token, server_id, site_name, overrides):
-  print('Updating .env')
+  print('Starting Update: .env')
   site_id = get_site_id(api_token, server_id, site_name)
   print(site_id)
   current_environment_variables = get_environment_variables(api_token, server_id, site_id)
   update_environment_variables(api_token, server_id, site_id, current_environment_variables, overrides)
-
-# FORGE_ENV_OVERRIDES = {
-#   "APP_URL": "https://ci-pr-environments.api.app.bizhaven.com",
-#   "DB_HOST": "staging.ckaqvri2ycor.us-west-2.rds.amazonaws.com"
-# }
-
-# forge_manage_site_env(
-#   api_token=os.getenv('FORGE_TOKEN'),
-#   server_id=os.getenv('FORGE_SERVER_ID'),
-#   site_name='ci-pr-environments.api.app.bizhaven.com',
-#   overrides=FORGE_ENV_OVERRIDES
-# )
+  print('Finished Update: .env')

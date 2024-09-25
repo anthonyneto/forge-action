@@ -54,6 +54,7 @@ forge_manage_site(
 FORGE_ENV_OVERRIDES = {
   "APP_URL": f"https://{FORGE_DOMAIN}",
   "DB_HOST": RDS_HOST,
+  "DB_NAME": RDS_PR_DB_NAME,
   "DB_USERNAME": RDS_PR_DB_NAME,
   "DB_PASSWORD": RDS_PR_DB_NAME
 }

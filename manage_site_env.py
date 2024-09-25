@@ -59,19 +59,19 @@ def update_environment_variables(api_token, server_id, site_id, content, overrid
     "content": updated_payload
   }
 
-  try:
-    response = requests.put(url, headers=headers, json=payload)
-    response.raise_for_status()
-    return response.text
-  except requests.exceptions.HTTPError as err:
-    print(f"HTTP error occurred while updating environment variables: {err}")
-  except Exception as err:
-    print(f"An error occurred while updating environment variables: {err}")
+  response = requests.put(url, headers=headers, json=payload)
+  # try:
+  #   response = requests.put(url, headers=headers, json=payload)
+  #   response.raise_for_status()
+  #   return response.text
+  # except requests.exceptions.HTTPError as err:
+  #   print(f"HTTP error occurred while updating environment variables: {err}")
+  # except Exception as err:
+  #   print(f"An error occurred while updating environment variables: {err}")
 
 def forge_manage_site_env(api_token, server_id, site_name, overrides):
   print('Starting Update: .env')
   site_id = get_site_id(api_token, server_id, site_name)
   current_environment_variables = get_environment_variables(api_token, server_id, site_id)
-  test = update_environment_variables(api_token, server_id, site_id, current_environment_variables, overrides)
-  print(test)
+  update_environment_variables(api_token, server_id, site_id, current_environment_variables, overrides)
   print('Finished Update: .env')

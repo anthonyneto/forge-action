@@ -3,9 +3,10 @@ import requests
 import os
 
 def get_site_id(api_token, server_id, site_name):
+  FORGE_TOKEN = os.getenv('FORGE_TOKEN')
   url = f"https://forge.laravel.com/api/v1/servers/{server_id}/sites"
   headers = {
-    "Authorization": f"Bearer {api_token}"
+    "Authorization": f"Bearer {FORGE_TOKEN}"
   }
 
   try:

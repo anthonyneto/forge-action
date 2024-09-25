@@ -49,13 +49,13 @@ def create_site(api_token, server_id, domain, directory, database, php_version=D
   payload = {
     "domain": domain,
     "project_type": project_type,
-    "directory": directory,
+    "directory": "/public",
+    "web_directory": directory,
     "username": username,
     "database": database,
     "php_version": php_version
   }
-  print(directory)
-  exit()
+  print(payload)
   try:
     response = requests.post(url, json=payload, headers=headers)
     response.raise_for_status()

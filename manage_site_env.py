@@ -88,5 +88,5 @@ def forge_manage_site_env(api_token, server_id, site_name, overrides):
 #   overrides=FORGE_ENV_OVERRIDES
 # )
 
-def aneto(api_token, server_id, site_name, overrides)
+def aneto(api_token, server_id, site_name, overrides):
   forge_manage_site_env(api_token, server_id, site_name, overrides)

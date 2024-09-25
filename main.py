@@ -70,7 +70,7 @@ FORGE_ENV_OVERRIDES = {
   "DB_HOST": "staging.ckaqvri2ycor.us-west-2.rds.amazonaws.com"
 }
 
-forge_manage_site_env(
+aneto(
   api_token=FORGE_API_TOKEN,
   server_id=FORGE_SERVER_ID,
   site_name='ci-pr-environments.api.app.bizhaven.com',

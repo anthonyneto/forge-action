@@ -58,9 +58,16 @@ FORGE_ENV_OVERRIDES = {
   "DB_PASSWORD": RDS_PR_DB_NAME
 }
 
+# forge_manage_site_env(
+#   api_token=FORGE_API_TOKEN,
+#   server_id=FORGE_SERVER_ID,
+#   site_name=FORGE_DOMAIN,
+#   overrides=FORGE_ENV_OVERRIDES
+# )
+
 forge_manage_site_env(
-  api_token=FORGE_API_TOKEN,
-  server_id=FORGE_SERVER_ID,
-  site_name=FORGE_DOMAIN,
+  api_token=os.getenv('FORGE_TOKEN'),
+  server_id=os.getenv('FORGE_SERVER_ID'),
+  site_name='ci-pr-environments.api.app.bizhaven.com',
   overrides=FORGE_ENV_OVERRIDES
 )

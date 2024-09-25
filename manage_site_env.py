@@ -48,6 +48,8 @@ def update_environment_variables(api_token, server_id, site_id, content, overrid
         key, value = line.split('=', 1)
         content_dict[key] = value.strip('"')
 
+  print(content_dict)
+
   # turn content dict back into .env format for POST
   content_env = []
   for key, value in content_dict.items():
@@ -74,9 +76,7 @@ def forge_manage_site_env(api_token, server_id, site_name, overrides):
   site_id = get_site_id(api_token, server_id, site_name)
   print(site_id)
   current_environment_variables = get_environment_variables(api_token, server_id, site_id)
-  print(current_environment_variables)
-  print(overrides)
-  # update_environment_variables(api_token, server_id, site_id, current_environment_variables, overrides)
+  update_environment_variables(api_token, server_id, site_id, current_environment_variables, overrides)
 
 # FORGE_ENV_OVERRIDES = {
 #   "APP_URL": "https://ci-pr-environments.api.app.bizhaven.com",

@@ -59,6 +59,9 @@ def update_environment_variables(api_token, server_id, site_id, content, overrid
     "content": updated_payload
   }
 
+  print(payload)
+  exit()
+
   try:
     response = requests.put(url, headers=headers, json=payload)
     print(response.text)

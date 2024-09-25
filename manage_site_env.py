@@ -9,14 +9,13 @@ def get_site_id(api_token, server_id, site_name):
     "Authorization": f"Bearer {FORGE_TOKEN}"
   }
 
-  print(site_name)
-  exit()
-
   try:
     response = requests.get(url, headers=headers)
+    print(response)
+    exit()
     response.raise_for_status()
     response_dict = json.loads(response.text)
-    print(response.text)
+    print(response_dict)
 
     for site in response_dict['sites']:
       if site['name'] == site_name:

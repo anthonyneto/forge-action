@@ -9,6 +9,9 @@ def get_site_id(api_token, server_id, site_name):
     "Authorization": f"Bearer {FORGE_TOKEN}"
   }
 
+  print(site_name)
+  exit()
+
   try:
     response = requests.get(url, headers=headers)
     response.raise_for_status()
@@ -41,23 +44,6 @@ def get_environment_variables(server_id, site_id):
     print(f"HTTP error occurred: {err}")
   except Exception as err:
     print(f"An error occurred: {err}")
-
-# def get_default_environment_variables(server_id, default_site_id):
-#   FORGE_TOKEN = os.getenv('FORGE_TOKEN')
-#   url = f"https://forge.laravel.com/api/v1/servers/{server_id}/sites/{default_site_id}/env"
-
-#   headers = {
-#     "Authorization": f"Bearer {FORGE_TOKEN}"
-#   }
-
-#   try:
-#     response = requests.get(url, headers=headers)
-#     response.raise_for_status()
-#     return response.text
-#   except requests.exceptions.HTTPError as err:
-#     print(f"HTTP error occurred while fetching default environment variables: {err}")
-#   except Exception as err:
-#     print(f"An error occurred while fetching default environment variables: {err}")
 
 def update_environment_variables(server_id, site_id, content, overrides):
   FORGE_TOKEN = os.getenv('FORGE_TOKEN')

@@ -59,7 +59,8 @@ FORGE_ENV_OVERRIDES = {
 }
 
 forge_manage_site_env(
-  FORGE_API_TOKEN,
-  FORGE_SERVER_ID,
-  FORGE_ENV_OVERRIDES
+  api_token=FORGE_API_TOKEN,
+  server_id=FORGE_SERVER_ID,
+  site_name=FORGE_DOMAIN,
+  overrides=FORGE_ENV_OVERRIDES
 )

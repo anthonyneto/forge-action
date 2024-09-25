@@ -59,9 +59,11 @@ def update_environment_variables(api_token, server_id, site_id, content, overrid
     "content": updated_payload
   }
 
+  print(url)
   print('do I get here?')
   response = requests.put(url, headers=headers, json=payload)
   print(f'Status Code: {response.status_code}')
+  print('Response Content:', response.json() if response.status_code == 200 else response.text)
   # try:
   #   response = requests.put(url, headers=headers, json=payload)
   #   response.raise_for_status()

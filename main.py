@@ -42,14 +42,14 @@ create_database_and_user(
   new_user_password=RDS_PR_DB_NAME
 )
 
-# forge_manage_site(
-#   api_token=FORGE_API_TOKEN,
-#   branch=BRANCH_NAME,
-#   git_url=FORGE_GIT_URL,
-#   server_id=FORGE_SERVER_ID,
-#   domain=FORGE_DOMAIN,
-#   directory=FORGE_DIRECTORY
-# )
+forge_manage_site(
+  api_token=FORGE_API_TOKEN,
+  branch=BRANCH_NAME,
+  git_url=FORGE_GIT_URL,
+  server_id=FORGE_SERVER_ID,
+  domain=FORGE_DOMAIN,
+  directory=FORGE_DIRECTORY
+)
 
 FORGE_ENV_OVERRIDES = {
   "APP_URL": f"https://{FORGE_DOMAIN}",

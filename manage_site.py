@@ -165,4 +165,4 @@ def forge_manage_site(api_token, domain, directory, server_id, branch, git_url, 
   else:
     create_deployment_git(api_token, server_id, site_id, branch, git_url)
 
-  deploy_now(api_token, server_id, site_id)
+  # deploy_now(api_token, server_id, site_id)

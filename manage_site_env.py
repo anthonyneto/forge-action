@@ -1,3 +1,4 @@
+import os
 import json
 import requests
 
@@ -59,19 +60,14 @@ def update_environment_variables(api_token, server_id, site_id, content, overrid
     "content": updated_payload
   }
 
-  print(url)
-  print('do I get here?')
-  response = requests.put(url, headers=headers, json=payload)
-  print(f'Status Code: {response.status_code}')
-  print('Response Content:', response.json() if response.status_code == 200 else response.text)
-  # try:
-  #   response = requests.put(url, headers=headers, json=payload)
-  #   response.raise_for_status()
-  #   return response.text
-  # except requests.exceptions.HTTPError as err:
-  #   print(f"HTTP error occurred while updating environment variables: {err}")
-  # except Exception as err:
-  #   print(f"An error occurred while updating environment variables: {err}")
+  try:
+    response = requests.put(url, headers=headers, json=payload)
+    response.raise_for_status()
+    return response.text
+  except requests.exceptions.HTTPError as err:
+    print(f"HTTP error occurred while updating environment variables: {err}")
+  except Exception as err:
+    print(f"An error occurred while updating environment variables: {err}")
 
 def forge_manage_site_env(api_token, server_id, site_name, overrides):
   print('Starting Update: .env')
@@ -79,3 +75,15 @@ def forge_manage_site_env(api_token, server_id, site_name, overrides):
   current_environment_variables = get_environment_variables(api_token, server_id, site_id)
   update_environment_variables(api_token, server_id, site_id, current_environment_variables, overrides)
   print('Finished Update: .env')
+
+# FORGE_ENV_OVERRIDES = {
+#   "APP_URL": "https://ci-pr-environments.api.app.bizhaven.com",
+#   "DB_HOST": "staging.ckaqvri2ycor.us-west-2.rds.amazonaws.com"
+# }
+
+# forge_manage_site_env(
+#   api_token=os.getenv('FORGE_TOKEN'),
+#   server_id=os.getenv('FORGE_SERVER_ID'),
+#   site_name='ci-pr-environments.api.app.bizhaven.com',
+#   overrides=FORGE_ENV_OVERRIDES
+# )

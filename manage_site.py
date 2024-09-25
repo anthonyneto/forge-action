@@ -34,6 +34,10 @@ def get_deployment_history(api_token, server_id, site_id):
   headers = {'Authorization': f'Bearer {api_token}'}
   try:
     response = requests.get(url, headers=headers)
+
+    print(response.text)
+    exit()
+
     response.raise_for_status()
     return response.json().get('deployments', [])
   except requests.RequestException as e:

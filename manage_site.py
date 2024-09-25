@@ -158,6 +158,7 @@ def forge_manage_site(api_token, domain, directory, server_id, branch, git_url, 
       return
 
   deployments = get_deployment_history(api_token, server_id, site_id)
+  print(deployments)
   deployment_exists = any(d['repository'] == git_url and d['branch'] == branch for d in deployments)
 
   if deployment_exists:

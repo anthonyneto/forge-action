@@ -160,9 +160,12 @@ def forge_manage_site(api_token, domain, directory, server_id, branch, git_url, 
   deployments = get_deployment_history(api_token, server_id, site_id)
   deployment_exists = any(d['repository'] == git_url and d['branch'] == branch for d in deployments)
 
+  print(deployments)
+  print(deployment_exists)
+
   if deployment_exists:
     print(f"Deployment for {git_url} on branch {branch} already exists.")
   else:
     create_deployment_git(api_token, server_id, site_id, branch, git_url)
 
-  # deploy_now(api_token, server_id, site_id)
+  deploy_now(api_token, server_id, site_id)

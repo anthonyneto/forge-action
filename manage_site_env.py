@@ -102,14 +102,14 @@ def forge_manage_site_env(api_token, server_id, site_name, overrides):
   current_environment_variables = get_environment_variables(server_id, site_id)
   update_environment_variables(server_id, site_id, current_environment_variables, overrides)
 
-FORGE_ENV_OVERRIDES = {
-  "APP_URL": "https://ci-pr-environments.api.app.bizhaven.com",
-  "DB_HOST": "staging.ckaqvri2ycor.us-west-2.rds.amazonaws.com"
-}
+# FORGE_ENV_OVERRIDES = {
+#   "APP_URL": "https://ci-pr-environments.api.app.bizhaven.com",
+#   "DB_HOST": "staging.ckaqvri2ycor.us-west-2.rds.amazonaws.com"
+# }
 
-forge_manage_site_env(
-  api_token=os.getenv('FORGE_TOKEN'),
-  server_id=os.getenv('FORGE_SERVER_ID'),
-  site_name='ci-pr-environments.api.app.bizhaven.com',
-  overrides=FORGE_ENV_OVERRIDES
-)
+# forge_manage_site_env(
+#   api_token=os.getenv('FORGE_TOKEN'),
+#   server_id=os.getenv('FORGE_SERVER_ID'),
+#   site_name='ci-pr-environments.api.app.bizhaven.com',
+#   overrides=FORGE_ENV_OVERRIDES
+# )

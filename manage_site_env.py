@@ -2,8 +2,28 @@ import json
 import requests
 import os
 
+def get_site_id(api_token, server_id, site_name):
+  url = f"https://forge.laravel.com/api/v1/servers/{server_id}/sites"
+  headers = {
+    "Authorization": f"Bearer {api_token}"
+  }
+
+  try:
+    response = requests.get(url, headers=headers)
+    response.raise_for_status()
+    response_dict = json.loads(response.text)
+
+    for site in response_dict['sites']:
+      if site['name'] == site_name:
+        return site['id']
+
+  except requests.exceptions.HTTPError as err:
+      print(f"HTTP error occurred: {err}")
+  except Exception as err:
+      print(f"An error occurred: {err}")
+
 def get_environment_variables(server_id, site_id):
-  FORGE_TOKEN = os.getenv('FORGE_TOKEN', 'your_forge_token')
+  FORGE_TOKEN = os.getenv('FORGE_TOKEN')
   url = f"https://forge.laravel.com/api/v1/servers/{server_id}/sites/{site_id}/env"
 
   headers = {
@@ -21,7 +41,7 @@ def get_environment_variables(server_id, site_id):
     print(f"An error occurred: {err}")
 
 def get_default_environment_variables(server_id, default_site_id):
-  FORGE_TOKEN = os.getenv('FORGE_TOKEN', 'your_forge_token')
+  FORGE_TOKEN = os.getenv('FORGE_TOKEN')
   url = f"https://forge.laravel.com/api/v1/servers/{server_id}/sites/{default_site_id}/env"
 
   headers = {
@@ -37,8 +57,8 @@ def get_default_environment_variables(server_id, default_site_id):
   except Exception as err:
     print(f"An error occurred while fetching default environment variables: {err}")
 
-def update_environment_variables(server_id, site_id, content):
-  FORGE_TOKEN = os.getenv('FORGE_TOKEN', 'your_forge_token')
+def update_environment_variables(server_id, site_id, content, overrides):
+  FORGE_TOKEN = os.getenv('FORGE_TOKEN')
   url = f"https://forge.laravel.com/api/v1/servers/{server_id}/sites/{site_id}/env"
 
   headers = {
@@ -46,6 +66,7 @@ def update_environment_variables(server_id, site_id, content):
     "Content-Type": "application/json"
   }
 
+  # turn content into a dict to make it easier to update values
   content_dict = {}
   for line in content.strip().split('\n'):
     line = line.strip()
@@ -54,14 +75,18 @@ def update_environment_variables(server_id, site_id, content):
     if '=' in line:
         key, value = line.split('=', 1)
         content_dict[key] = value.strip('"')
-  content_json = json.dumps(content_dict, indent=2)
+
+  # turn content dict back into .env format for POST
+  content_env = []
+  for key, value in content_dict.items():
+      if key in overrides:
+        value = overrides[key]
+      content_env.append(f"{key}={value}")
+  updated_payload = "\n".join(content_env)
+
   payload = {
-    "content": "world"
+    "content": updated_payload
   }
-
-  payload = json.dumps(payload, indent=4)
-  print(payload)
-
 
   try:
     response = requests.put(url, headers=headers, json=payload)
@@ -72,19 +97,19 @@ def update_environment_variables(server_id, site_id, content):
   except Exception as err:
     print(f"An error occurred while updating environment variables: {err}")
 
-def main():
-  server_id = 683662
-  site_id = 2477874
+def forge_manage_site_env(api_token, server_id, site_name, overrides):
+  site_id = get_site_id(api_token, server_id, site_name)
   current_environment_variables = get_environment_variables(server_id, site_id)
+  update_environment_variables(server_id, site_id, current_environment_variables, overrides)
 
-  if not current_environment_variables:
-    print("The response content is empty. Attempting to update environment variables.")
-    updated_environment_variables = get_default_environment_variables(server_id, default_site_id=2097190)
-    print(f"Updating Environment Variables")
+FORGE_ENV_OVERRIDES = {
+  "APP_URL": "https://ci-pr-environments.api.app.bizhaven.com",
+  "DB_HOST": "staging.ckaqvri2ycor.us-west-2.rds.amazonaws.com"
+}
 
-    update_environment_variables(server_id, site_id, updated_environment_variables)
-  else:
-    print(current_environment_variables)
-
-if __name__ == "__main__":
-  main()
+forge_manage_site_env(
+  api_token=os.getenv('FORGE_TOKEN'),
+  server_id=os.getenv('FORGE_SERVER_ID'),
+  site_name='ci-pr-environments.api.app.bizhaven.com',
+  overrides=FORGE_ENV_OVERRIDES
+)

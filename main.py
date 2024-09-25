@@ -2,6 +2,7 @@ from manage_functions import *
 from manage_rds import *
 from manage_mysql import *
 from manage_site import *
+from manage_site_env import *
 
 BRANCH_NAME = os.getenv('INPUT_GITHUB_BRANCH_NAME', 'dev')
 
@@ -48,4 +49,15 @@ forge_manage_site(
   server_id=FORGE_SERVER_ID,
   domain=FORGE_DOMAIN,
   directory=FORGE_DIRECTORY
+)
+
+FORGE_ENV_OVERRIDES = {
+  "APP_URL": "https://ci-pr-environments.api.app.bizhaven.com",
+  "DB_HOST": RDS_HOST
+}
+
+forge_manage_site_env(
+  FORGE_API_TOKEN,
+  FORGE_SERVER_ID,
+  FORGE_ENV_OVERRIDES
 )

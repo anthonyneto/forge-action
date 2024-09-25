@@ -87,6 +87,3 @@ def forge_manage_site_env(api_token, server_id, site_name, overrides):
 #   site_name='ci-pr-environments.api.app.bizhaven.com',
 #   overrides=FORGE_ENV_OVERRIDES
 # )
-
-def aneto(api_token, server_id, site_name, overrides):
-  forge_manage_site_env(api_token, server_id, site_name, overrides)

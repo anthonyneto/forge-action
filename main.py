@@ -1,8 +1,8 @@
 from manage_functions import *
-from manage_rds import *
-from manage_mysql import *
-from manage_site import *
-from manage_site_env import *
+from manage_rds import create_rds_instance, wait_for_db_instance_available, get_rds_endpoint
+from manage_mysql import create_database_and_user
+from manage_site import forge_manage_site
+from manage_site_env import forge_manage_site_env
 
 BRANCH_NAME = os.getenv('INPUT_GITHUB_BRANCH_NAME', 'dev')
 
@@ -51,28 +51,16 @@ forge_manage_site(
   directory=FORGE_DIRECTORY
 )
 
-# FORGE_ENV_OVERRIDES = {
-#   "APP_URL": f"https://{FORGE_DOMAIN}",
-#   "DB_HOST": RDS_HOST,
-#   "DB_USERNAME": RDS_PR_DB_NAME,
-#   "DB_PASSWORD": RDS_PR_DB_NAME
-# }
-
-# forge_manage_site_env(
-#   api_token=FORGE_API_TOKEN,
-#   server_id=FORGE_SERVER_ID,
-#   site_name=FORGE_DOMAIN,
-#   overrides=FORGE_ENV_OVERRIDES
-# )
-
 FORGE_ENV_OVERRIDES = {
-  "APP_URL": "https://ci-pr-environments.api.app.bizhaven.com/test",
-  "DB_HOST": "staging.ckaqvri2ycor.us-west-2.rds.amazonaws.com"
+  "APP_URL": f"https://{FORGE_DOMAIN}",
+  "DB_HOST": RDS_HOST,
+  "DB_USERNAME": RDS_PR_DB_NAME,
+  "DB_PASSWORD": RDS_PR_DB_NAME
 }
 
-aneto(
+forge_manage_site_env(
   api_token=FORGE_API_TOKEN,
   server_id=FORGE_SERVER_ID,
-  site_name='ci-pr-environments.api.app.bizhaven.com',
+  site_name=FORGE_DOMAIN,
   overrides=FORGE_ENV_OVERRIDES
 )

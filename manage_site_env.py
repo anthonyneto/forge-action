@@ -1,6 +1,5 @@
 import json
 import requests
-import os
 
 def get_site_id(api_token, server_id, site_name):
   url = f"https://forge.laravel.com/api/v1/servers/{server_id}/sites"
@@ -47,8 +46,6 @@ def update_environment_variables(api_token, server_id, site_id, content, overrid
     if '=' in line:
         key, value = line.split('=', 1)
         content_dict[key] = value.strip('"')
-
-  print(content_dict)
 
   # turn content dict back into .env format for POST
   content_env = []

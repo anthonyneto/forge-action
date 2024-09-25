@@ -20,13 +20,9 @@ def get_site_id(api_token, server_id, site_name):
   except Exception as err:
       print(f"An error occurred: {err}")
 
-def get_environment_variables(server_id, site_id):
-  FORGE_TOKEN = os.getenv('FORGE_TOKEN')
+def get_environment_variables(api_token, server_id, site_id):
   url = f"https://forge.laravel.com/api/v1/servers/{server_id}/sites/{site_id}/env"
-
-  headers = {
-    "Authorization": f"Bearer {FORGE_TOKEN}"
-  }
+  headers = {'Authorization': f'Bearer {api_token}'}
 
   try:
     response = requests.get(url, headers=headers)
@@ -38,14 +34,9 @@ def get_environment_variables(server_id, site_id):
   except Exception as err:
     print(f"An error occurred: {err}")
 
-def update_environment_variables(server_id, site_id, content, overrides):
-  FORGE_TOKEN = os.getenv('FORGE_TOKEN')
+def update_environment_variables(api_token, server_id, site_id, content, overrides):
   url = f"https://forge.laravel.com/api/v1/servers/{server_id}/sites/{site_id}/env"
-
-  headers = {
-    "Authorization": f"Bearer {FORGE_TOKEN}",
-    "Content-Type": "application/json"
-  }
+  headers = {'Authorization': f'Bearer {api_token}', 'Content-Type': 'application/json'}
 
   # turn content into a dict to make it easier to update values
   content_dict = {}
@@ -82,10 +73,10 @@ def forge_manage_site_env(api_token, server_id, site_name, overrides):
   print('Updating .env')
   site_id = get_site_id(api_token, server_id, site_name)
   print(site_id)
-  current_environment_variables = get_environment_variables(server_id, site_id)
+  current_environment_variables = get_environment_variables(api_token, server_id, site_id)
   print(current_environment_variables)
   print(overrides)
-  update_environment_variables(server_id, site_id, current_environment_variables, overrides)
+  # update_environment_variables(api_token, server_id, site_id, current_environment_variables, overrides)
 
 # FORGE_ENV_OVERRIDES = {
 #   "APP_URL": "https://ci-pr-environments.api.app.bizhaven.com",

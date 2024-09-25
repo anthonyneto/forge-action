@@ -8,11 +8,8 @@ def get_site_id(api_token, server_id, site_name):
 
   try:
     response = requests.get(url, headers=headers)
-    print(response.text)
-    exit()
     response.raise_for_status()
     response_dict = json.loads(response.text)
-    print(response_dict)
 
     for site in response_dict['sites']:
       if site['name'] == site_name:

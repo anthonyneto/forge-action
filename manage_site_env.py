@@ -59,7 +59,7 @@ def update_environment_variables(api_token, server_id, site_id, content, overrid
     "content": updated_payload
   }
 
-  response = requests.put(url, headers=headers, json=payload)
+  requests.put(url, headers=headers, json=payload)
   # try:
   #   response = requests.put(url, headers=headers, json=payload)
   #   response.raise_for_status()

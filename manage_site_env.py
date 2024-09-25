@@ -59,7 +59,9 @@ def update_environment_variables(api_token, server_id, site_id, content, overrid
     "content": updated_payload
   }
 
-  requests.put(url, headers=headers, json=payload)
+  print('do I get here?')
+  response = requests.put(url, headers=headers, json=payload)
+  print(f'Status Code: {response.status_code}')
   # try:
   #   response = requests.put(url, headers=headers, json=payload)
   #   response.raise_for_status()

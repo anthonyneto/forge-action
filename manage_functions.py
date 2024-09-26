@@ -3,6 +3,18 @@ import re
 import os
 import requests
 
+def handle_request_error(e, action):
+  if e.response is not None:
+    try:
+      error_details = e.response.json()
+      print(f"Error during {action}: {e}")
+      print("Error details:", error_details)
+    except ValueError:
+      print(f"Error during {action}: {e}")
+      print("Error response is not valid JSON:", e.response.text)
+  else:
+    print(f"Error during {action}: {e}")
+
 def to_web_safe_string(string):
   string = string.lower()
   string = re.sub(r'[^a-z0-9-]', '-', string)
@@ -53,3 +65,20 @@ def get_site_id(api_token, server_id, site_name):
       print(f"HTTP error occurred: {err}")
   except Exception as err:
       print(f"An error occurred: {err}")
+
+def deploy_now(api_token, server_id, site_name):
+  site_id = get_site_id(api_token, server_id, site_name)
+  url = f'https://forge.laravel.com/api/v1/servers/{server_id}/sites/{site_id}/deployment/deploy'
+  headers = {
+    'Authorization': f'Bearer {api_token}',
+    'Content-Type': 'application/json'
+  }
+
+  try:
+    response = requests.post(url, headers=headers)
+    response.raise_for_status()
+    print("Deployment triggered successfully.")
+    return response.json()
+  except requests.RequestException as e:
+    handle_request_error(e, "triggering deployment")
+    return None

@@ -8,18 +8,6 @@ DEFAULT_PHP_VERSION = 'php82'
 DEFAULT_PROJECT_TYPE = 'php'
 DEFAULT_GIT_PROVIDER = 'github'
 
-def handle_request_error(e, action):
-  if e.response is not None:
-    try:
-      error_details = e.response.json()
-      print(f"Error during {action}: {e}")
-      print("Error details:", error_details)
-    except ValueError:
-      print(f"Error during {action}: {e}")
-      print("Error response is not valid JSON:", e.response.text)
-  else:
-    print(f"Error during {action}: {e}")
-
 def get_sites(api_token, server_id):
   url = f'https://forge.laravel.com/api/v1/servers/{server_id}/sites'
   headers = {'Authorization': f'Bearer {api_token}'}
@@ -123,22 +111,6 @@ def check_site_status(api_token, server_id, site_id, timeout=300):
 
     time.sleep(5)
 
-def deploy_now(api_token, server_id, site_id):
-  url = f'https://forge.laravel.com/api/v1/servers/{server_id}/sites/{site_id}/deployment/deploy'
-  headers = {
-    'Authorization': f'Bearer {api_token}',
-    'Content-Type': 'application/json'
-  }
-
-  try:
-    response = requests.post(url, headers=headers)
-    response.raise_for_status()
-    print("Deployment triggered successfully.")
-    return response.json()
-  except requests.RequestException as e:
-    handle_request_error(e, "triggering deployment")
-    return None
-
 def forge_manage_site(api_token, domain, directory, server_id, branch, git_url, database=''):
   sites = get_sites(api_token, server_id)
   if not isinstance(sites, list):
@@ -167,5 +139,3 @@ def forge_manage_site(api_token, domain, directory, server_id, branch, git_url, 
     print(f"Repository already setup for {git_url}")
   else:
     create_deployment_git(api_token, server_id, site_id, branch, git_url)
-
-  deploy_now(api_token, server_id, site_id)

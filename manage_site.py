@@ -145,7 +145,6 @@ def forge_manage_site(api_token, domain, directory, server_id, branch, git_url, 
   if site_data:
     site_id = site_data['id']
     print(f"Site '{domain}' already exists.")
-    exit() # weird bug with not being able to find deployments, and running create_deployment_git resets .env
   else:
     response = create_site(api_token, server_id, domain, directory, database)
     if response:
@@ -159,12 +158,12 @@ def forge_manage_site(api_token, domain, directory, server_id, branch, git_url, 
       print("Failed to create site, cannot set up deployment.")
       return
 
-  deployments = get_deployment_history(api_token, server_id, site_id)
-  deployment_exists = any(d['repository'] == git_url and d['branch'] == branch for d in deployments)
+  # deployments = get_deployment_history(api_token, server_id, site_id)
+  # deployment_exists = any(d['repository'] == git_url and d['branch'] == branch for d in deployments)
 
-  if deployment_exists:
-    print(f"Deployment for {git_url} on branch {branch} already exists.")
-  else:
-    create_deployment_git(api_token, server_id, site_id, branch, git_url)
+  # if deployment_exists:
+  #   print(f"Deployment for {git_url} on branch {branch} already exists.")
+  # else:
+  #   create_deployment_git(api_token, server_id, site_id, branch, git_url)
 
-  deploy_now(api_token, server_id, site_id)
+  # deploy_now(api_token, server_id, site_id)

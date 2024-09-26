@@ -1,7 +1,7 @@
 from manage_functions import *
 from manage_rds import create_rds_instance, wait_for_db_instance_available, get_rds_endpoint
 from manage_mysql import create_database_and_user
-from manage_site import forge_manage_site deploy_now
+from manage_site import forge_manage_site
 from manage_site_env import forge_manage_site_env
 from manage_site_deployment_script import forge_manage_site_deployment_script
 

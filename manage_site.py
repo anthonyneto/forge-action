@@ -1,5 +1,7 @@
 import time
+import json
 import requests
+from manage_functions import *
 
 DEFAULT_USERNAME = 'forge'
 DEFAULT_PHP_VERSION = 'php82'
@@ -29,17 +31,20 @@ def get_sites(api_token, server_id):
     handle_request_error(e, "fetching sites")
     return []
 
-def get_deployment_history(api_token, server_id, site_id):
-  url = f'https://forge.laravel.com/api/v1/servers/{server_id}/sites/{site_id}/deployment-history'
+def get_repository_status(api_token, server_id, site_id):
+  url = f'https://forge.laravel.com/api/v1/servers/{server_id}/sites/{site_id}'
   headers = {'Authorization': f'Bearer {api_token}'}
+
   try:
     response = requests.get(url, headers=headers)
-
     response.raise_for_status()
-    return response.json().get('deployments', [])
-  except requests.RequestException as e:
-    handle_request_error(e, "fetching deployments")
-    return []
+    response_dict = json.loads(response.text)
+    return response_dict['site']['repository_status']
+
+  except requests.exceptions.HTTPError as err:
+      print(f"HTTP error occurred: {err}")
+  except Exception as err:
+      print(f"An error occurred: {err}")
 
 def create_site(api_token, server_id, domain, directory, database, php_version=DEFAULT_PHP_VERSION, project_type=DEFAULT_PROJECT_TYPE, username=DEFAULT_USERNAME):
   url = f'https://forge.laravel.com/api/v1/servers/{server_id}/sites'
@@ -158,12 +163,9 @@ def forge_manage_site(api_token, domain, directory, server_id, branch, git_url, 
       print("Failed to create site, cannot set up deployment.")
       return
 
-  # deployments = get_deployment_history(api_token, server_id, site_id)
-  # deployment_exists = any(d['repository'] == git_url and d['branch'] == branch for d in deployments)
+  if get_repository_status == 'installed'
+    print(f"Repository already setup for {git_url}")
+  else:
+    create_deployment_git(api_token, server_id, site_id, branch, git_url)
 
-  # if deployment_exists:
-  #   print(f"Deployment for {git_url} on branch {branch} already exists.")
-  # else:
-  #   create_deployment_git(api_token, server_id, site_id, branch, git_url)
-
-  # deploy_now(api_token, server_id, site_id)
+  deploy_now(api_token, server_id, site_id)

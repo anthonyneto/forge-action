@@ -1,6 +1,6 @@
 import requests
 import textwrap
-from manage_site_env import get_site_id
+from manage_functions import *
 
 def update_deployment_script(api_token, server_id, site_id, sitename):
   url = f"https://forge.laravel.com/api/v1/servers/{server_id}/sites/{site_id}/deployment/script"

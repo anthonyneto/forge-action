@@ -1,23 +1,5 @@
-import json
 import requests
-
-def get_site_id(api_token, server_id, site_name):
-  url = f"https://forge.laravel.com/api/v1/servers/{server_id}/sites"
-  headers = {'Authorization': f'Bearer {api_token}'}
-
-  try:
-    response = requests.get(url, headers=headers)
-    response.raise_for_status()
-    response_dict = json.loads(response.text)
-
-    for site in response_dict['sites']:
-      if site['name'] == site_name:
-        return site['id']
-
-  except requests.exceptions.HTTPError as err:
-      print(f"HTTP error occurred: {err}")
-  except Exception as err:
-      print(f"An error occurred: {err}")
+from manage_functions import *
 
 def get_environment_variables(api_token, server_id, site_id):
   url = f"https://forge.laravel.com/api/v1/servers/{server_id}/sites/{site_id}/env"

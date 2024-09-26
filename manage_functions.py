@@ -1,5 +1,7 @@
-import os
+import json
 import re
+import os
+import requests
 
 def to_web_safe_string(string):
   string = string.lower()
@@ -33,3 +35,21 @@ def DEFAULT_SITE_DOMAIN(branch, zone):
 
 def DEFAULT_SITE_DIRECTORY(branch, zone):
   return f"/home/forge/{DEFAULT_SITE_DOMAIN(branch, zone)}/public"
+
+def get_site_id(api_token, server_id, site_name):
+  url = f"https://forge.laravel.com/api/v1/servers/{server_id}/sites"
+  headers = {'Authorization': f'Bearer {api_token}'}
+
+  try:
+    response = requests.get(url, headers=headers)
+    response.raise_for_status()
+    response_dict = json.loads(response.text)
+
+    for site in response_dict['sites']:
+      if site['name'] == site_name:
+        return site['id']
+
+  except requests.exceptions.HTTPError as err:
+      print(f"HTTP error occurred: {err}")
+  except Exception as err:
+      print(f"An error occurred: {err}")

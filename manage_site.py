@@ -163,7 +163,7 @@ def forge_manage_site(api_token, domain, directory, server_id, branch, git_url, 
       print("Failed to create site, cannot set up deployment.")
       return
 
-  if get_repository_status == 'installed'
+  if get_repository_status == 'installed':
     print(f"Repository already setup for {git_url}")
   else:
     create_deployment_git(api_token, server_id, site_id, branch, git_url)

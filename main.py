@@ -5,7 +5,8 @@ from manage_site import forge_manage_site
 from manage_site_env import forge_manage_site_env
 from manage_site_deployment_script import forge_manage_site_deployment_script
 
-BRANCH_NAME = os.getenv('INPUT_GITHUB_BRANCH_NAME', 'dev')
+BRANCH_NAME          = os.getenv('INPUT_GITHUB_BRANCH_NAME', 'dev')
+BRANCH_NAME_WEB_SAFE = to_web_safe_string(BRANCH_NAME)
 
 RDS_VPC_ID        = os.getenv('INPUT_RDS_VPC_ID')
 RDS_SUBNET_GROUP  = os.getenv('INPUT_RDS_SUBNET_GROUP')
@@ -54,6 +55,7 @@ forge_manage_site(
 
 FORGE_ENV_OVERRIDES = {
   "APP_URL": f"https://{FORGE_DOMAIN}",
+  "APP_APP_FE_URL": f"https://{BRANCH_NAME_WEB_SAFE}.app.{FORGE_ZONE}",
   "DB_HOST": RDS_HOST,
   "DB_DATABASE": RDS_PR_DB_NAME,
   "DB_USERNAME": RDS_PR_DB_NAME,

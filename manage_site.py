@@ -98,7 +98,7 @@ def check_site_status(api_token, server_id, site_id, timeout=300):
         if site_data['status'] == 'installed':
           return site_data
         else:
-          print("Site is not installed yet, checking again in 5 seconds...")
+          print("Site is not installed yet, checking again in 15 seconds...")
       else:
         print("Site data not found.")
     else:
@@ -109,7 +109,7 @@ def check_site_status(api_token, server_id, site_id, timeout=300):
       print("Timeout reached while waiting for site to install.")
       return None
 
-    time.sleep(5)
+    time.sleep(15)
 
 def forge_manage_site(api_token, domain, directory, server_id, branch, git_url, database=''):
   sites = get_sites(api_token, server_id)

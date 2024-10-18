@@ -58,5 +58,5 @@ def forge_manage_site_env(api_token, server_id, site_name, overrides):
   if not site_data:
     print("Failed to confirm site status after creation.")
     return
-  update_environment_variables(api_token, server_id, site_id, current_environment_variables, overrides)
+  retry(update_environment_variables(api_token, server_id, site_id, current_environment_variables, overrides))
   print('Finished Update: .env')

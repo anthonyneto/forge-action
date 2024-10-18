@@ -4,6 +4,18 @@ import os
 import time
 import requests
 
+def retry(func, max_retries=5, initial_wait_time=5, max_wait_time=300):
+  wait_time = initial_wait_time
+  for attempt in range(max_retries):
+    try:
+      return func()
+    except Exception as e:
+      print(f"Attempt {attempt + 1} failed: {e}")
+      if attempt < max_retries - 1:
+        time.sleep(wait_time)
+        wait_time = min(wait_time + 5, max_wait_time)
+  raise Exception("Max retries exceeded")
+
 def handle_request_error(e, action):
   if e.response is not None:
     try:

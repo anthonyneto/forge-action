@@ -54,9 +54,30 @@ def forge_manage_site_env(api_token, server_id, site_name, overrides):
   print('Starting Update: .env')
   site_id = get_site_id(api_token, server_id, site_name)
   current_environment_variables = get_environment_variables(api_token, server_id, site_id)
+
+  max_attempts = 6
+  attempts = 0
+
+  while attempts < max_attempts:
+    if not current_environment_variables:
+      current_environment_variables = get_environment_variables(api_token, server_id, site_id)
+      if current_environment_variables:
+        print(f"Success")
+        break
+    else:
+      # continue since .env was successfully returned
+      break
+
+    attempts += 1
+    print(f"Attempt {attempts} failed. Retrying in 5 seconds...")
+    time.sleep(5)
+
+  if attempts == max_attempts:
+    print("Failed to update variable after 5 attempts.")
+
   site_data = check_site_status(api_token, server_id, site_id)
   if not site_data:
     print("Failed to confirm site status after creation.")
     return
-  retry(update_environment_variables(api_token, server_id, site_id, current_environment_variables, overrides))
+  update_environment_variables(api_token, server_id, site_id, current_environment_variables, overrides)
   print('Finished Update: .env')

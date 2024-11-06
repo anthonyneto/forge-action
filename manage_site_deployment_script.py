@@ -28,6 +28,7 @@ def update_deployment_script(api_token, server_id, site_id, sitename):
       $FORGE_PHP artisan storage:link
 
       $FORGE_PHP artisan migrate --force
+      $FORGE_PHP artisan migrate:fresh --seed --env=testing --force
 
       $FORGE_PHP artisan queue:restart
     fi

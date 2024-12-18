@@ -40,9 +40,7 @@ create_database_and_user(
   host=RDS_HOST,
   user=RDS_ROOT_USERNAME,
   password=RDS_ROOT_PASSWORD,
-  new_db_name=RDS_PR_DB_NAME,
-  new_user=RDS_PR_DB_NAME,
-  new_user_password=RDS_PR_DB_NAME
+  new_db_name=RDS_PR_DB_NAME
 )
 
 forge_manage_site(
@@ -59,8 +57,8 @@ FORGE_ENV_OVERRIDES = {
   "APP_FE_URL": f"https://{BRANCH_NAME_WEB_SAFE}.app.{FORGE_ZONE}",
   "DB_HOST": RDS_HOST,
   "DB_DATABASE": RDS_PR_DB_NAME,
-  "DB_USERNAME": RDS_PR_DB_NAME,
-  "DB_PASSWORD": RDS_PR_DB_NAME
+  "DB_USERNAME": RDS_ROOT_USERNAME,
+  "DB_PASSWORD": RDS_ROOT_PASSWORD
 }
 
 forge_manage_site_env(
